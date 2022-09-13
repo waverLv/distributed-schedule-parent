@@ -1,0 +1,7 @@
+# Project exclude paths
+/distributed-admin/target/
+/distributed-api/target/
+/distributed-client/target/
+/distributed-common/target/
+/distributed-demo/target/
+/distributed-rpc/target/
