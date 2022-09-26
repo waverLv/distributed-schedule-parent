@@ -1,5 +1,7 @@
 package com.lv.distributed.wheel;
 
+import com.lv.distributed.monitor.EventDispatch;
+
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +16,7 @@ public class SystemTimer implements Timer {
     private Long tickMs = 1L;
     private Integer wheelSize = 20;
     private Long startMs = System.currentTimeMillis();
+    private EventDispatch eventDispatch;
     //用来执行TimerTask任务
     private ExecutorService taskExecutor =
             Executors.newFixedThreadPool(1,(runnable) -> {
@@ -35,6 +38,9 @@ public class SystemTimer implements Timer {
     private Consumer<TimerTaskEntry> reinsert = (timerTaskEntry) -> addTimerTaskEntry(timerTaskEntry);
 
     public SystemTimer(String executorName, Long tickMs, Integer wheelSize, Long startMs) {
+        this(executorName,tickMs,wheelSize,startMs,null);
+    }
+    public SystemTimer(String executorName, Long tickMs, Integer wheelSize, Long startMs,EventDispatch eventDispatch) {
         this.executorName = executorName;
         this.tickMs = tickMs;
         this.wheelSize = wheelSize;
@@ -46,6 +52,7 @@ public class SystemTimer implements Timer {
                 taskCounter,
                 delayQueue
         );
+        this.eventDispatch = eventDispatch;
     }
 
     // 可能会多个线程操作，所以需要加锁
@@ -53,7 +60,7 @@ public class SystemTimer implements Timer {
     public void add(TimerTask timerTask) {
         readLock.lock();
         try{
-            addTimerTaskEntry(new TimerTaskEntry(timerTask,timerTask.delayMs + System.currentTimeMillis()));
+            addTimerTaskEntry(new TimerTaskEntry(timerTask,timerTask.getDelayMs() + System.currentTimeMillis()));
         }finally {
             readLock.unlock();
         }
@@ -64,6 +71,9 @@ public class SystemTimer implements Timer {
             // 返回false并且任务未取消，则提交当前任务立即执行。
             if(!timerTaskEntry.cancel()) {
                 taskExecutor.submit(timerTaskEntry.timerTask);
+                if(null != eventDispatch){
+                    eventDispatch.publish(timerTaskEntry.timerTask.getApplicationEvent());
+                }
             }
         }
     }

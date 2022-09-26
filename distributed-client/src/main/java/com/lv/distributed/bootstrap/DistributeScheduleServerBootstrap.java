@@ -13,13 +13,8 @@ import org.junit.Assert;
  */
 public class DistributeScheduleServerBootstrap{
 
-    private ScheduleNettyServer scheduleNettyServer;
     private NettyServer nettyServer;
 
-    public DistributeScheduleServerBootstrap scheduleNettyServer(ScheduleNettyServer scheduleNettyServer){
-        this.scheduleNettyServer = scheduleNettyServer;
-        return this;
-    }
     public DistributeScheduleServerBootstrap scheduleNettyServer(NettyServer nettyServer){
         this.nettyServer = nettyServer;
         return this;
@@ -27,11 +22,11 @@ public class DistributeScheduleServerBootstrap{
 
 
     public void destroy(){
-//        scheduleNettyServer.destroy();
+        nettyServer.shutdownGracefully();
     }
 
     public void start(){
-        Assert.assertNotNull("scheduleNettyServer不能为空",scheduleNettyServer);
+        Assert.assertNotNull("nettyServer不能为空",nettyServer);
         nettyServer.start();
     }
 }

@@ -12,6 +12,7 @@
     <file url="file://$PROJECT_DIR$/distributed-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/distributed-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/distributed-demo" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/distributed-extension" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/distributed-rpc" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/distributed-rpc/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/distributed-store" charset="UTF-8" />

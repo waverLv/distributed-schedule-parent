@@ -13,8 +13,8 @@ public class TimeWheel {
     private AtomicInteger taskCounter;  // 当前层任务数
     private DelayQueue<TimerTaskList> queue; //延迟队列，用于从队列取每个任务列表
 
-    private Long interval; //每一层时间轮代表的时间
     private List<TimerTaskList> buckets;  // 每一层的每一个槽中的时间任务列表
+    private Long interval; //每一层时间轮代表的时间
     private Long currentTime;  // 修正后的系统启动时间
 
     private TimeWheel overflowWheel = null;  // 上一层时间轮
@@ -50,8 +50,6 @@ public class TimeWheel {
     // 添加任务
     public boolean add(TimerTaskEntry timerTaskEntry) {
         Long expiration = timerTaskEntry.expirationMs;
-
-        Long thisTime = currentTime + tickMs;
         // 任务是否已经取消，取消则返回
         if(timerTaskEntry.cancel()) {
             return false;
@@ -64,13 +62,13 @@ public class TimeWheel {
             Long virtualId = expiration / tickMs;
             // 计算当前任务要分配在哪个槽中
             int whereBucket = (int) (virtualId % wheelSize);
-            TimerTaskList bucket = buckets.get((int)(virtualId % wheelSize));
+            TimerTaskList bucket = buckets.get(whereBucket);
 
             bucket.add(timerTaskEntry);
 
             long bucketExpiration = virtualId * tickMs;
             //更新槽的过期时间，添加入延迟队列
-            if(bucket.setExpiration(virtualId * tickMs)) {
+            if(bucket.setExpiration(bucketExpiration)) {
                 queue.offer(bucket);
             }
             return true;

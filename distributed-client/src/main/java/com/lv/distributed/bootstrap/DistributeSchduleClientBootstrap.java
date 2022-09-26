@@ -1,18 +1,14 @@
 package com.lv.distributed.bootstrap;
 
 import com.lv.distributed.client.NettyClient;
-import com.lv.distributed.client.ScheduleNettyClient;
 import com.lv.distributed.event.dispatch.EventDispatch;
 import com.lv.distributed.factory.bean.AbstractScheduleBeanFactory;
 import com.lv.distributed.factory.bean.AnnotationScheduleBeanFactory;
 import com.lv.distributed.factory.bean.ScheduleBeanFactory;
 import com.lv.distributed.factory.invoke.Invoker;
-import com.lv.distributed.factory.method.MethodDefinition;
 import com.lv.distributed.factory.method.ScheduleMethodFactory;
 import com.lv.distributed.factory.scanner.PackageScannerContext;
 import org.junit.Assert;
-
-import java.util.Map;
 
 /**
  * @ProjectName: DistributeClientBootstrap
@@ -38,22 +34,18 @@ public class DistributeSchduleClientBootstrap {
     }
 
     public DistributeSchduleClientBootstrap packageScannerContext(PackageScannerContext packageScannerContext){
-        Assert.assertNotNull("packageScannerContext不能为空",packageScannerContext);
         this.packageScannerContext = packageScannerContext;
         return this;
     }
     public DistributeSchduleClientBootstrap eventDispatch(EventDispatch eventDispatch){
-        Assert.assertNotNull("eventDispatch不能为空",eventDispatch);
         this.eventDispatch = eventDispatch;
         return this;
     }
     public DistributeSchduleClientBootstrap scheduleMethodFactory(ScheduleMethodFactory scheduleMethodFactory){
-        Assert.assertNotNull("scheduleMethodFactory不能为空",scheduleMethodFactory);
         this.scheduleMethodFactory = scheduleMethodFactory;
         return this;
     }
     public DistributeSchduleClientBootstrap invoker(Invoker invoker){
-        Assert.assertNotNull("invoker不能为空",invoker);
         this.invoker = invoker;
         return this;
     }
@@ -62,6 +54,7 @@ public class DistributeSchduleClientBootstrap {
         Assert.assertNotNull("scheduleMethodFactory不能为空",scheduleMethodFactory);
         Assert.assertNotNull("packageScannerContext不能为空",packageScannerContext);
         Assert.assertNotNull("eventDispatch不能为空",eventDispatch);
+        Assert.assertNotNull("invoker不能为空",invoker);
         if (null == scheduleBeanFactory){
             scheduleBeanFactory = new AnnotationScheduleBeanFactory(packageScannerContext,eventDispatch,scheduleMethodFactory);
         }

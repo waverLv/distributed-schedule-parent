@@ -37,6 +37,11 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-autoconfigure</artifactId>
       </dependency>
+      <dependency>
+          <groupId>com.lv.distributed</groupId>
+          <artifactId>distributed-extension</artifactId>
+          <version>${project.version}</version>
+      </dependency>
   </dependencies>
 
     <build>

@@ -8,6 +8,10 @@ public class DistributeTaskBO {
     private String methodParam;
     private Object[] methodParamTypes;
     private String applicationName;
+    private boolean start;
+    private String routeName;
+    private String faultTolerantName;
+    private String balanceName;
     private List<SocketAddress> addressList;
 
     public String getMethodBean() {
@@ -56,6 +60,38 @@ public class DistributeTaskBO {
 
     public void setMethodParam(String methodParam) {
         this.methodParam = methodParam;
+    }
+
+    public String getRouteName() {
+        return routeName;
+    }
+
+    public void setRouteName(String routeName) {
+        this.routeName = routeName;
+    }
+
+    public String getFaultTolerantName() {
+        return faultTolerantName;
+    }
+
+    public void setFaultTolerantName(String faultTolerantName) {
+        this.faultTolerantName = faultTolerantName;
+    }
+
+    public String getBalanceName() {
+        return balanceName;
+    }
+
+    public void setBalanceName(String balanceName) {
+        this.balanceName = balanceName;
+    }
+
+    public boolean isStart() {
+        return start;
+    }
+
+    public void setStart(boolean start) {
+        this.start = start;
     }
 
     public String generateUniqueName(){

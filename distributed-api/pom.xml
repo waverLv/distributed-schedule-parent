@@ -9,7 +9,6 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>distributed-api</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
@@ -25,20 +24,21 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-      <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
       <dependency>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
           <version>1.7.25</version>
       </dependency>
-      <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
       <dependency>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-log4j12</artifactId>
           <version>1.7.25</version>
-          <!-- <scope>test</scope> -->
       </dependency>
-
+      <dependency>
+        <groupId>com.lv.distributed</groupId>
+        <artifactId>distributed-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
   </dependencies>
 
   <build>

@@ -14,6 +14,7 @@
      <module>distributed-admin</module>
      <module>distributed-store</module>
       <module>distributed-demo</module>
+      <module>distributed-extension</module>
   </modules>
 
   <name>distributed-schedule</name>
@@ -42,6 +43,11 @@
             <dependency>
                 <groupId>com.lv.distributed</groupId>
                 <artifactId>distributed-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lv.distributed</groupId>
+                <artifactId>distributed-extension</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

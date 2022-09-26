@@ -12,6 +12,7 @@
         <module name="distributed-demo" />
         <module name="distributed-rpc" />
         <module name="distributed-client" />
+        <module name="distributed-extension" />
         <module name="distributed-admin" />
         <module name="distributed-common" />
       </profile>

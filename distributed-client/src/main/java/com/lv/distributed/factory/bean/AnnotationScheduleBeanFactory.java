@@ -1,15 +1,11 @@
 package com.lv.distributed.factory.bean;
 
-import com.lv.distributed.bean.DistributeRequestBody;
+import com.lv.distributed.bean.DistributeTaskBO;
 import com.lv.distributed.event.dispatch.EventDispatch;
 import com.lv.distributed.event.event.AllBeansRegisterEvent;
-import com.lv.distributed.factory.method.MethodDefinition;
+import com.lv.distributed.event.event.BeanRegisterEvent;
 import com.lv.distributed.factory.method.ScheduleMethodFactory;
 import com.lv.distributed.factory.scanner.PackageScannerContext;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName: AnnotationScheduleBeanFactory
@@ -32,7 +28,8 @@ public class AnnotationScheduleBeanFactory extends AbstractScheduleBeanFactory {
 
     @Override
     public void notifyBeanRegisterFinished(BeanDefinition beanDefinition) {
-
+        BeanRegisterEvent event = new BeanRegisterEvent(beanDefinition);
+        eventDispatch.dispatch(event);
     }
 
     @Override

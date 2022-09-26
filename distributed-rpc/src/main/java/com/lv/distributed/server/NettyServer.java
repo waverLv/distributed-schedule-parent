@@ -60,7 +60,16 @@ public class NettyServer extends Thread{
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }finally{
+           shutdownGracefully();
         }
     }
+
+    public void shutdownGracefully(){
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
+    }
+
+
 
 }

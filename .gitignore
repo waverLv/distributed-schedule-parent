@@ -5,3 +5,6 @@
 /distributed-common/target/
 /distributed-demo/target/
 /distributed-rpc/target/
+.idea/*
+.idea/distributed-schedule-parent.iml
+distributed-schedule-lv.iml

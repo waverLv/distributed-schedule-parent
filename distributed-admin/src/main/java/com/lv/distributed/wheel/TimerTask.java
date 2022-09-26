@@ -1,11 +1,18 @@
 package com.lv.distributed.wheel;
 
+import org.springframework.context.ApplicationEvent;
+
 public abstract class TimerTask implements Runnable {
 
-    public long delayMs; //表示当前任务延迟多久后执行(单位ms)，比如说延迟3s，则此值为3000
+    private long delayMs; //表示当前任务延迟多久后执行(单位ms)，比如说延迟3s，则此值为3000
+    private ApplicationEvent applicationEvent;
 
     public TimerTask(long delayMs) {
         this.delayMs =  delayMs;
+    }
+    public TimerTask(ApplicationEvent applicationEvent,long delayMs) {
+        this.applicationEvent = applicationEvent;
+        this.delayMs = delayMs;
     }
     // 指向TimerTaskEntry对象，一个TimerTaskEntry包含一个TimerTask，TimerTaskEntry是可复用的
     private TimerTaskEntry timerTaskEntry = null;
@@ -28,5 +35,13 @@ public abstract class TimerTask implements Runnable {
 
     public TimerTaskEntry getTimerTaskEntry() {
         return timerTaskEntry;
+    }
+
+    public ApplicationEvent getApplicationEvent() {
+        return applicationEvent;
+    }
+
+    public long getDelayMs() {
+        return delayMs;
     }
 }
