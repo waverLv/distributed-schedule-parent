@@ -1,12 +1,10 @@
 package com.lv.distributed.monitor;
 
-import com.lv.distributed.bean.DistributeTaskBO;
 import com.lv.distributed.bean.TaskDetailPO;
 import com.lv.distributed.service.ExecuteInvokeService;
 import com.lv.distributed.util.CronUtil;
 import com.lv.distributed.wheel.SystemTimer;
 import com.lv.distributed.wheel.TimerTask;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -35,9 +33,7 @@ public class TaskStartListener implements ApplicationListener<TaskStartEvent> {
         systemTimer.add(new TimerTask(taskStartEvent,getDelayTime(detail)) {
             @Override
             public void run() {
-                DistributeTaskBO distributeTaskBO = new DistributeTaskBO();
-                BeanUtils.copyProperties(detail, distributeTaskBO);
-                executeInvokeService.invoke(distributeTaskBO);
+                executeInvokeService.invoke(detail);
             }
         });
     }

@@ -19,10 +19,6 @@ public abstract class InvokeStrategyAdapter implements InvokeStrategy {
         return invokeStrategyPipeline.fireInvoke(distributeTaskBO);
     }
 
-    @Override
-    public DistributeTaskResponseWrapper invoke(DistributeTaskRequestWrapper requestWrapper) {
-        return null;
-    }
 
     public InvokeStrategyPipeline pipeline(){
         return this.invokeStrategyPipeline;

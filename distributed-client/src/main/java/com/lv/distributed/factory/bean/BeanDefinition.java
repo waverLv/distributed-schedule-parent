@@ -1,5 +1,7 @@
 package com.lv.distributed.factory.bean;
 
+import com.lv.distributed.bean.ScheduleConfig;
+
 /**
  * @ProjectName: BeanDefination
  * @Author: lvminghui
@@ -12,6 +14,7 @@ public class BeanDefinition {
     private Object proxy;
     private String beanName;
     private Object target;
+    private ScheduleConfig scheduleConfig;
 
     public Class getType() {
         return type;
@@ -43,5 +46,13 @@ public class BeanDefinition {
 
     public void setTarget(Object target) {
         this.target = target;
+    }
+
+    public ScheduleConfig getScheduleConfig() {
+        return scheduleConfig;
+    }
+
+    public void setScheduleConfig(ScheduleConfig scheduleConfig) {
+        this.scheduleConfig = scheduleConfig;
     }
 }

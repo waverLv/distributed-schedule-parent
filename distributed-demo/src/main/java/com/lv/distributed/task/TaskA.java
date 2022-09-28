@@ -4,6 +4,8 @@ import com.lv.distributed.annotation.DistributeComponent;
 import com.lv.distributed.annotation.DistributeSchedule;
 import com.lv.distributed.annotation.Inject;
 import com.lv.distributed.service.ServiceB;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @ProjectName: TaskA
@@ -15,7 +17,7 @@ import com.lv.distributed.service.ServiceB;
 
 @DistributeComponent
 public class TaskA {
-    @Inject(name = "serviceB")
+    @Inject(value = "serviceB")
     private ServiceB b;
 
     @DistributeSchedule(name = "A任务")

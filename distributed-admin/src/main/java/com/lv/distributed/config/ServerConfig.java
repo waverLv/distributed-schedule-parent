@@ -9,7 +9,10 @@ import com.lv.distributed.server.ScheduleNettyServer;
 import com.lv.distributed.service.impl.StoreServiceImpl;
 import com.lv.distributed.support.adapter.DefaultInvokeStrategyAdapter;
 import com.lv.distributed.support.adapter.InvokeStrategyAdapter;
+import com.lv.distributed.support.balance.LoadBalanceStrategyChooser;
+import com.lv.distributed.support.context.LoadBalanceInvokeStrategyContext;
 import com.lv.distributed.support.pipeline.DefaultInvokeStrategyPipeline;
+import com.lv.distributed.support.pipeline.DefaultInvokeStrategyPipelineFactory;
 import com.lv.distributed.support.pipeline.InvokeStrategyPipeline;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +46,7 @@ public class ServerConfig {
 
     @Bean
     public InvokeStrategyAdapter invokeStrategyAdapter(){
-        return new DefaultInvokeStrategyAdapter(new DefaultInvokeStrategyPipeline());
+        return new DefaultInvokeStrategyAdapter(new DefaultInvokeStrategyPipelineFactory());
     }
 
 

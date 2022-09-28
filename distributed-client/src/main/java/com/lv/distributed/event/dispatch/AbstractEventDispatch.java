@@ -42,14 +42,16 @@ public abstract class AbstractEventDispatch implements EventDispatch {
      */
     public void dispatch(EventObject eventObject){
         List<EventListener> eventListeners = eventListenerContext.getEventListeners(eventObject);
-        eventListeners.stream().forEach(listener -> {
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onEvent(eventObject);
-                }
+        if(null != eventListeners && eventListeners.size() > 0){
+            eventListeners.stream().forEach(listener -> {
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.onEvent(eventObject);
+                    }
+                });
             });
-        });
+        }
     }
 
     /**

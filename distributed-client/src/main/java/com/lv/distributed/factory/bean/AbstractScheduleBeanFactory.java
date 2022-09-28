@@ -3,6 +3,7 @@ package com.lv.distributed.factory.bean;
 import com.lv.distributed.annotation.DistributeComponent;
 import com.lv.distributed.annotation.Inject;
 import com.lv.distributed.bean.DistributeRequestBody;
+import com.lv.distributed.bean.ScheduleConfig;
 import com.lv.distributed.event.aware.EventAware;
 import com.lv.distributed.event.dispatch.EventDispatch;
 import com.lv.distributed.factory.method.MethodDefinition;
@@ -14,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,15 +39,17 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
     protected PackageScannerContext scannerContext;
     protected EventDispatch eventDispatch;
     protected ScheduleMethodFactory scheduleMethodFactory;
+    protected ScheduleConfig scheduleConfig;
 
 
-    public AbstractScheduleBeanFactory(PackageScannerContext scannerContext,EventDispatch eventDispatch,ScheduleMethodFactory scheduleMethodFactory){
+    public AbstractScheduleBeanFactory(PackageScannerContext scannerContext,EventDispatch eventDispatch,ScheduleMethodFactory scheduleMethodFactory,ScheduleConfig scheduleConfig){
         Assert.assertNotNull("packageScannerContext不能为空",scannerContext);
         Assert.assertNotNull("eventDispatch不能为空",eventDispatch);
         Assert.assertNotNull("scheduleMethodFactory不能为空",scheduleMethodFactory);
         this.scannerContext = scannerContext;
         this.setEventDispatch(eventDispatch);
         this.scheduleMethodFactory = scheduleMethodFactory;
+        this.scheduleConfig = scheduleConfig;
     }
 
     @Override
@@ -98,6 +100,7 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
         bd.setBeanName(generateBeanName(instance));
         bd.setType(clazz);
         bd.setTarget(instance);
+        bd.setScheduleConfig(scheduleConfig);
         return bd;
     }
 
@@ -108,7 +111,8 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
      */
     private void populate(BeanDefinition bd) throws IllegalAccessException, InstantiationException {
         Field[] declaredFields = bd.getTarget().getClass().getDeclaredFields();
-        for(Field field : declaredFields){
+        for(int i=0; i<declaredFields.length; i++){
+            Field field = declaredFields[i];
             field.setAccessible(true);
             if(field.isAnnotationPresent(Inject.class)){
                 String beanName = getBeanName(field);
@@ -120,9 +124,8 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
                         e.printStackTrace();
                     }
                 }else{
-                    //TODO 解决死循环问题
                     registerBean(field.getType());
-                    populate(bd);
+                    i--;
                 }
             }
         };
@@ -157,11 +160,7 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
      */
     private String getBeanName(Field field){
         Inject annotation = field.getAnnotation(Inject.class);
-        if(StringUtils.isEmpty(annotation.value())){
-            if(StringUtils.isNotEmpty(annotation.name())){
-                return annotation.name();
-            }
-        }else if(!StringUtils.isEmpty(annotation.value())){
+        if(StringUtils.isNotEmpty(annotation.value())){
             return annotation.value();
         }
         return field.getName();
@@ -178,9 +177,9 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
             return component.value();
         }
         String simpleName = bean.getClass().getSimpleName();
-        String lowerFirstWord = simpleName.substring(0, 1).toLowerCase();
-        String rest = simpleName.substring(1);
-        String tempBeanName = lowerFirstWord + rest;
+        char[] chars = simpleName.toCharArray();
+        chars[0] = Character.toLowerCase(chars[0]);
+        String tempBeanName = new String(chars);
         if(tempBeanName.contains("$")){
             tempBeanName = tempBeanName.substring(0,tempBeanName.indexOf("$"));
         }
@@ -212,6 +211,7 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
         for(Map.Entry<String,MethodDefinition> entry : allMethodDefinitions.entrySet()){
             MethodDefinition value = entry.getValue();
             DistributeRequestBody body = new DistributeRequestBody();
+            body.setApplicationName(value.getBeanDefinition().getScheduleConfig().getApplicationName());
             body.setMethodBean(value.getBeanDefinition().getBeanName());
             body.setMethodName(value.getMethod().getName());
             body.setMethodParamTypes(value.getMethod().getParameterTypes());

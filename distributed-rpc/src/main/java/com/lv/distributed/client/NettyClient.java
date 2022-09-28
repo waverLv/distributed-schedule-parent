@@ -84,15 +84,10 @@ public class NettyClient extends Thread{
                 public void run() {
                     try {
                         TimeUnit.SECONDS.sleep(5);
-                        try {
-                            // 发起重连操作
-                            connect(NettyConstant.REMOTE_PORT, NettyConstant.REMOTEIP);
-                        } catch (Exception e) {
-                            System.out.println("NettyClient 发起重连操作异常");
-                            e.printStackTrace();
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        // 发起重连操作
+                        connect(NettyConstant.REMOTE_PORT, NettyConstant.REMOTEIP);
+                    } catch (Exception e) {
+                        log.error("NettyClient 发起重连操作异常,异常原因：",e);
                     }
                 }
             });

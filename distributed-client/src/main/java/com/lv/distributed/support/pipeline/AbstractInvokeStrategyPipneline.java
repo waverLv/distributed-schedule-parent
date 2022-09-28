@@ -26,6 +26,7 @@ public abstract class AbstractInvokeStrategyPipneline implements InvokeStrategyP
         prev.next = context;
         context.prev = prev;
         context.next = tailInvokeStrategyContext;
+        this.tailInvokeStrategyContext.prev = context;
 
     }
 
@@ -35,6 +36,7 @@ public abstract class AbstractInvokeStrategyPipneline implements InvokeStrategyP
         next.prev = context;
         context.next = next;
         context.prev = headInvokeStrategyContext;
+        this.headInvokeStrategyContext.next = context;
     }
 
     @Override

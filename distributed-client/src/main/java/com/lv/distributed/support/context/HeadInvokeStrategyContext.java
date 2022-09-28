@@ -9,7 +9,7 @@ import com.lv.distributed.bean.DistributeTaskResponseWrapper;
 public  class HeadInvokeStrategyContext extends InvokeStrategyContext{
 
     public HeadInvokeStrategyContext() {
-        super(null,null);
+        super(null);
     }
 
     @Override

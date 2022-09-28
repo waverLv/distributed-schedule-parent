@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Profile("prod")
-public class TaskExecutorRelationServiceImpl extends ServiceImpl<TaskExecutorRelationMapper, TaskExecutorRelationPO> implements TaskExecutorRelationService {
+@Profile("dev")
+public class TaskExecutorRelationServiceDevImpl  implements TaskExecutorRelationService {
     @Override
     public void savePO(TaskExecutorRelationPO taskExecutorRelationPO) {
-        this.save(taskExecutorRelationPO);
+
+//        this.save(taskExecutorRelationPO);
     }
 
     @Override

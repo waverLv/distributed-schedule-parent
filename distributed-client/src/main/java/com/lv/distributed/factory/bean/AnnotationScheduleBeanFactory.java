@@ -1,6 +1,6 @@
 package com.lv.distributed.factory.bean;
 
-import com.lv.distributed.bean.DistributeTaskBO;
+import com.lv.distributed.bean.ScheduleConfig;
 import com.lv.distributed.event.dispatch.EventDispatch;
 import com.lv.distributed.event.event.AllBeansRegisterEvent;
 import com.lv.distributed.event.event.BeanRegisterEvent;
@@ -17,7 +17,10 @@ import com.lv.distributed.factory.scanner.PackageScannerContext;
 public class AnnotationScheduleBeanFactory extends AbstractScheduleBeanFactory {
 
     public AnnotationScheduleBeanFactory(PackageScannerContext scannerContext, EventDispatch eventDispatch, ScheduleMethodFactory scheduleMethodFactory) {
-        super(scannerContext,eventDispatch,scheduleMethodFactory);
+        this(scannerContext,eventDispatch,scheduleMethodFactory,null);
+    }
+    public AnnotationScheduleBeanFactory(PackageScannerContext scannerContext, EventDispatch eventDispatch, ScheduleMethodFactory scheduleMethodFactory, ScheduleConfig scheduleConfig) {
+        super(scannerContext,eventDispatch,scheduleMethodFactory,scheduleConfig);
     }
 
 

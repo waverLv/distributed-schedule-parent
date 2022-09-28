@@ -1,5 +1,6 @@
 package com.lv.distributed;
 
+import com.lv.distributed.bean.ScheduleConfig;
 import com.lv.distributed.bootstrap.DistributeSchduleClientBootstrap;
 import com.lv.distributed.client.NettyClient;
 import com.lv.distributed.event.dispatch.AbstractEventDispatch;
@@ -23,9 +24,10 @@ public class App
         DefaultScheduleMethodFactory smf = new DefaultScheduleMethodFactory();
         bootstrap.packageScannerContext(new DefaultPackageScannerContext("com.lv.distributed"))
                 .eventDispatch(new MulticasterEventDispatch(null,
-                        new AbstractEventDispatch.EventListenerContext().registerListener(new AllBeansRegisterListener())))
+                        new MulticasterEventDispatch.EventListenerContext().registerListener(new AllBeansRegisterListener())))
                 .scheduleMethodFactory(smf)
-                .invoker(new DefaultInvoker(smf));
+                .invoker(new DefaultInvoker(smf))
+                .scheduleConfig(new ScheduleConfig().applicationName("samples"));
         bootstrap.start();
     }
 }

@@ -11,5 +11,4 @@ public interface ScheduleRegisterContext {
 
     public void unRegister(ChannelHandlerContext ctx,Object msg);
 
-    public List<DistributeTask> getTaskList(String groupName);
 }

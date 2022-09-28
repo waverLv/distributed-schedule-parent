@@ -7,7 +7,7 @@ import com.lv.distributed.support.Chooser;
 public class DefaultInvokeStrategyContext extends InvokeStrategyContext {
 
     public DefaultInvokeStrategyContext(Chooser chooser) {
-        super(chooser,null);
+        super(chooser);
     }
 
     @Override

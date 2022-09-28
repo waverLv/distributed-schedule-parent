@@ -5,6 +5,7 @@ import com.lv.distributed.api.LoadBalanceStrategy;
 import com.lv.distributed.factory.SpiExtensionFactory;
 import com.lv.distributed.support.balance.RoundRobinLoadBalanceStrategy;
 import com.lv.distributed.support.context.FaultTolerantInvokeStrategyContext;
+import com.lv.distributed.support.context.LoadBalanceInvokeStrategyContext;
 import com.lv.distributed.support.context.RouterInvokeStrategyContext;
 import com.lv.distributed.support.balance.LoadBalanceStrategyChooser;
 import com.lv.distributed.support.fault_tolerant.FailoverFaultTolerantStrategy;
@@ -31,19 +32,21 @@ public class DefaultInvokeStrategyPipelineFactory implements InvokeStrategyPipel
     @Override
     public InvokeStrategyPipeline newInstance( ) {
         DefaultInvokeStrategyPipeline pipeline = new DefaultInvokeStrategyPipeline();
-        pipeline.addLast(this.faultTolerantStrategyChooser);
-        pipeline.addLast(this.loadBalanceStrategyChooser);
+        pipeline.addLast(new FaultTolerantInvokeStrategyContext<FaultTolerantStrategy>(this.faultTolerantStrategyChooser));
+        pipeline.addLast(new LoadBalanceInvokeStrategyContext<LoadBalanceStrategy>(this.loadBalanceStrategyChooser));
         return pipeline;
     }
     private void addFaultTolerantStrategy(){
+        FailoverFaultTolerantStrategy failoverFaultTolerantStrategy = new FailoverFaultTolerantStrategy();
         this.faultTolerantStrategyChooser
-                .add("default",new FailoverFaultTolerantStrategy())
-                .add("failover",new FailoverFaultTolerantStrategy());
+                .add("default",failoverFaultTolerantStrategy)
+                .add("failover", failoverFaultTolerantStrategy);
     }
     private void addLoadBalanceStrategy(){
+        RoundRobinLoadBalanceStrategy roundRobinLoadBalanceStrategy = new RoundRobinLoadBalanceStrategy();
         this.loadBalanceStrategyChooser
-                .add("default",new RoundRobinLoadBalanceStrategy())
-                .add("roundRobin",new RoundRobinLoadBalanceStrategy());
+                .add("default",roundRobinLoadBalanceStrategy)
+                .add("roundRobin", roundRobinLoadBalanceStrategy);
     }
 
 }

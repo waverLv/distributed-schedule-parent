@@ -14,8 +14,4 @@ public abstract class  AbstractFaultTolerantStrategy implements FaultTolerantStr
         return null;
     }
 
-    @Override
-    public DistributeTaskResponseWrapper invoke(DistributeTaskRequestWrapper requestWrapper) {
-        return fault(requestWrapper);
-    }
 }

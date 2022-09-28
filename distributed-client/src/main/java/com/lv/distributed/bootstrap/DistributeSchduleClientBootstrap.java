@@ -1,5 +1,6 @@
 package com.lv.distributed.bootstrap;
 
+import com.lv.distributed.bean.ScheduleConfig;
 import com.lv.distributed.client.NettyClient;
 import com.lv.distributed.event.dispatch.EventDispatch;
 import com.lv.distributed.factory.bean.AbstractScheduleBeanFactory;
@@ -25,6 +26,7 @@ public class DistributeSchduleClientBootstrap {
     private EventDispatch eventDispatch;
     private ScheduleMethodFactory scheduleMethodFactory;
     private Invoker invoker;
+    private ScheduleConfig scheduleConfig;
 
 
     private DistributeSchduleClientBootstrap scheduleBeanFactory(ScheduleBeanFactory scheduleBeanFactory){
@@ -50,13 +52,19 @@ public class DistributeSchduleClientBootstrap {
         return this;
     }
 
+    public DistributeSchduleClientBootstrap scheduleConfig(ScheduleConfig scheduleConfig){
+        this.scheduleConfig = scheduleConfig;
+        return this;
+    }
+
     public void start(){
         Assert.assertNotNull("scheduleMethodFactory不能为空",scheduleMethodFactory);
         Assert.assertNotNull("packageScannerContext不能为空",packageScannerContext);
         Assert.assertNotNull("eventDispatch不能为空",eventDispatch);
         Assert.assertNotNull("invoker不能为空",invoker);
+        Assert.assertNotNull("scheduleConfig不能为空",scheduleConfig);
         if (null == scheduleBeanFactory){
-            scheduleBeanFactory = new AnnotationScheduleBeanFactory(packageScannerContext,eventDispatch,scheduleMethodFactory);
+            scheduleBeanFactory = new AnnotationScheduleBeanFactory(packageScannerContext,eventDispatch,scheduleMethodFactory,scheduleConfig);
         }
         scheduleBeanFactory.start();
         initNettyClient();

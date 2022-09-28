@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfig {
 
-    @Bean
+    @Bean(initMethod = "start")
     public SystemTimer timer(EventDispatch eventDispatch){
         return new SystemTimer("distribute-schedule-",1000l,20,System.currentTimeMillis(),eventDispatch);
     }

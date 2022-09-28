@@ -15,7 +15,7 @@ public  class TailInvokeStrategyContext extends InvokeStrategyContext{
 
 
     public TailInvokeStrategyContext() {
-        super(null,null);
+        super(null);
         if(executorContext == null){
             executorContext = new DefaultExecutorExecutorContext();
         }
@@ -28,7 +28,6 @@ public  class TailInvokeStrategyContext extends InvokeStrategyContext{
         executorContext.submit(distributeTask);
         return null;
     }
-
 
 
     private DistributeTask newTask(DistributeTaskBOWrapper wrapper){

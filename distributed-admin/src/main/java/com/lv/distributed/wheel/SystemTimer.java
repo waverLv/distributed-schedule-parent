@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
-public class SystemTimer implements Timer {
+public class SystemTimer extends Thread implements Timer {
 
     private String executorName;
     private Long tickMs = 1L;
@@ -110,6 +110,18 @@ public class SystemTimer implements Timer {
     @Override
     public void shutdown() {
         taskExecutor.shutdown();
+    }
+
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                // 驱动时间轮线程间隔1s驱动
+                this.advanceClock(1000L);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

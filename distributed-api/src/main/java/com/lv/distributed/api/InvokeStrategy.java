@@ -8,6 +8,6 @@ public interface InvokeStrategy {
 
     public DistributeTaskResponseWrapper invoke(DistributeTaskBO distributeTaskBO);
 
-    public DistributeTaskResponseWrapper invoke(DistributeTaskRequestWrapper response);
+//    public DistributeTaskResponseWrapper invoke(DistributeTaskRequestWrapper response);
 
 }

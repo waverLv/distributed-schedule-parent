@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Profile("prod")
-public class TaskDetailServiceImpl extends ServiceImpl<TaskDetailMapper, TaskDetailPO> implements TaskDetailService {
+@Profile("dev")
+public class TaskDetailServiceDevImpl  implements TaskDetailService {
     @Autowired
     TaskEventDispatch dispatch;
     /**
@@ -23,17 +23,25 @@ public class TaskDetailServiceImpl extends ServiceImpl<TaskDetailMapper, TaskDet
      * @param taskDetailPO
      */
     public void savePO(TaskDetailPO taskDetailPO){
-        this.save(taskDetailPO);
+//        this.save(taskDetailPO);
     }
 
     @Override
     public TaskDetailPO getDetail(Integer scheduleTaskId) {
-        return this.getById(scheduleTaskId);
+//        return this.getById(scheduleTaskId);
+        TaskDetailPO detail = new TaskDetailPO();
+        detail.setMethodBean("taskA");
+        detail.setMethodName("a");
+        detail.setFaultTolerantName("default");
+        detail.setBalanceName("default");
+        detail.setId(scheduleTaskId);
+        return detail;
     }
 
     @Override
     public List<TaskDetailPO> getAllActiveDetails() {
-        return this.list(new QueryWrapper<TaskDetailPO>().eq("start",true));
+//        return this.list(new QueryWrapper<TaskDetailPO>().eq("start",true));
+        return null;
     }
 
     @Override
@@ -51,7 +59,12 @@ public class TaskDetailServiceImpl extends ServiceImpl<TaskDetailMapper, TaskDet
         TaskDetailPO detail = new TaskDetailPO();
         detail.setId(scheduleTaskId);
         detail.setStartFlag(true);
-        this.updateById(detail);
+        detail.setMethodBean("taskA");
+        detail.setMethodName("a");
+        detail.setFaultTolerantName("default");
+        detail.setBalanceName("default");
+        detail.setCronTab(" 0 */1 * * * ?");
+//        this.updateById(detail);
         dispatch.publish(new TaskStartEvent(detail));
     }
 

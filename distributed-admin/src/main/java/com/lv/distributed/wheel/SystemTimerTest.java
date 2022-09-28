@@ -35,8 +35,6 @@ public class SystemTimerTest {
                 }
             }
         });
-
-
         Thread.sleep(1000000);
         timer.shutdown();
         executorService.shutdown();

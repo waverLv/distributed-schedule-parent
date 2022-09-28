@@ -11,5 +11,4 @@ public  class LoadBalanceStrategyChooser<T extends LoadBalanceStrategy> extends 
         super(extensionFactory, (Class<T>) LoadBalanceStrategy.class);
     }
 
-
 }

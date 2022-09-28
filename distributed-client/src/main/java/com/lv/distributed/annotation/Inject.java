@@ -6,7 +6,9 @@ import java.lang.annotation.*;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Documented
 public @interface Inject {
-
-    public String name() default "";
-    public String value() default "";
+    /**
+     * beanName
+     * @return
+     */
+    public String value();
 }

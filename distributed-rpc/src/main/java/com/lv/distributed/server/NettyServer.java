@@ -49,7 +49,7 @@ public class NettyServer extends Thread{
                         socketChannel.pipeline().addLast("messageDecoder",new NettyMessageDecoder(1024*1024, 4, 4,-8,0));
                         socketChannel.pipeline().addLast("messageEncoder",new NettyMessageEncoder());
                         socketChannel.pipeline().addLast(new RegisterRespHandler(scheduleRegisterContext));
-//                            socketChannel.pipeline().addLast(new InvokeReqHandler());
+                        socketChannel.pipeline().addLast(new InvokeReqHandler());
 //                        socketChannel.pipeline().addLast("LoginAuthRespHandler",new LoginAuthRespHandler());
 //                        socketChannel.pipeline().addLast("HeartBeatHandler",new HeartBeatRespHandler());
                     }

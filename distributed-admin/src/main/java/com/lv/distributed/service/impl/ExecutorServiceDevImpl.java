@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Profile("prod")
-public class ExecutorServiceImpl extends ServiceImpl<ExecutorMapper, TaskExecutorPO> implements TaskExecutorService {
+@Profile("dev")
+public class ExecutorServiceDevImpl  implements TaskExecutorService {
 
     @Override
     public void savePO(TaskExecutorPO executorPO) {
-        this.save(executorPO);
+//        this.save(executorPO);
     }
 
     @Override
@@ -24,6 +24,7 @@ public class ExecutorServiceImpl extends ServiceImpl<ExecutorMapper, TaskExecuto
         QueryWrapper<TaskExecutorPO> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("task_id",executorIds);
         queryWrapper.orderByAsc("id");
-        return this.list(queryWrapper);
+//        return this.list(queryWrapper);
+        return null;
     }
 }

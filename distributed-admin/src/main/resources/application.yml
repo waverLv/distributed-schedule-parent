@@ -3,5 +3,7 @@ server:
 spring:
   application:
     name: distributed-admin
+  profiles:
+    active: dev
 log:
   path: /workspace/logs/service/${spring.application.name}
