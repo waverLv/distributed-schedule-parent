@@ -1,11 +1,9 @@
 package com.lv.distributed.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lv.distributed.bean.TaskDetailPO;
-import com.lv.distributed.dao.TaskDetailMapper;
 import com.lv.distributed.monitor.TaskEventDispatch;
-import com.lv.distributed.monitor.TaskStartEvent;
+import com.lv.distributed.monitor.event.TaskShutdownEvent;
+import com.lv.distributed.monitor.event.TaskStartEvent;
 import com.lv.distributed.service.TaskDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -66,6 +64,15 @@ public class TaskDetailServiceDevImpl  implements TaskDetailService {
         detail.setCronTab(" 0 */1 * * * ?");
 //        this.updateById(detail);
         dispatch.publish(new TaskStartEvent(detail));
+    }
+
+    @Override
+    public void shutdownTask(Integer scheduleTaskId) {
+        TaskDetailPO detail = new TaskDetailPO();
+        detail.setId(scheduleTaskId);
+        detail.setStartFlag(false);
+//        this.updateById(detail);
+        dispatch.publish(new TaskShutdownEvent(detail));
     }
 
 }

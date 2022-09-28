@@ -8,3 +8,4 @@
 .idea/*
 .idea/distributed-schedule-parent.iml
 distributed-schedule-lv.iml
+log.path_IS_UNDEFINED/*

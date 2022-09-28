@@ -10,13 +10,14 @@ public class ScheduleOperationController {
     @Autowired
     TaskDetailService taskDetailService;
 
-    @RequestMapping(value = "start_task")
+    @RequestMapping(value = "start")
     public void startTask(Integer scheduleTaskId){
         taskDetailService.start(scheduleTaskId);
     }
 
-    public void shutdownTask(){
-
+    @RequestMapping(value = "shutdown")
+    public void shutdownTask(Integer scheduleTaskId){
+        taskDetailService.shutdownTask(scheduleTaskId);
     }
 
     public void list(){

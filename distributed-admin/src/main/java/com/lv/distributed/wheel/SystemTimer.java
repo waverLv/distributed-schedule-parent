@@ -2,6 +2,7 @@ package com.lv.distributed.wheel;
 
 import com.lv.distributed.monitor.EventDispatch;
 
+import java.util.Iterator;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -66,7 +67,8 @@ public class SystemTimer extends Thread implements Timer {
         }
     }
 
-    private void addTimerTaskEntry(TimerTaskEntry timerTaskEntry) {      // 往时间轮添加任务
+    // 往时间轮添加任务
+    private void addTimerTaskEntry(TimerTaskEntry timerTaskEntry) {
         if(!timeWheel.add(timerTaskEntry)) {
             // 返回false并且任务未取消，则提交当前任务立即执行。
             if(!timerTaskEntry.cancel()) {
@@ -123,5 +125,6 @@ public class SystemTimer extends Thread implements Timer {
             }
         }
     }
+
 }
 

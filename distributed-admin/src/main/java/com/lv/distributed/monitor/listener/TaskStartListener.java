@@ -1,8 +1,10 @@
-package com.lv.distributed.monitor;
+package com.lv.distributed.monitor.listener;
 
 import com.lv.distributed.bean.TaskDetailPO;
+import com.lv.distributed.monitor.event.TaskStartEvent;
 import com.lv.distributed.service.ExecuteInvokeService;
 import com.lv.distributed.util.CronUtil;
+import com.lv.distributed.util.TimerTaskContext;
 import com.lv.distributed.wheel.SystemTimer;
 import com.lv.distributed.wheel.TimerTask;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +32,14 @@ public class TaskStartListener implements ApplicationListener<TaskStartEvent> {
     @Override
     public void onApplicationEvent(TaskStartEvent taskStartEvent) {
         TaskDetailPO  detail = (TaskDetailPO) taskStartEvent.getSource();
-        systemTimer.add(new TimerTask(taskStartEvent,getDelayTime(detail)) {
+        TimerTask timerTask = new TimerTask(taskStartEvent, getDelayTime(detail)) {
             @Override
             public void run() {
                 executeInvokeService.invoke(detail);
             }
-        });
+        };
+        systemTimer.add(timerTask);
+        TimerTaskContext.put(detail.getId(),timerTask);
     }
 
     /**

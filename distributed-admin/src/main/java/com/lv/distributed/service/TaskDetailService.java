@@ -17,4 +17,6 @@ public interface TaskDetailService {
     void modify(TaskDetailPO taskDetailPO);
 
     void start(Integer sheduleTaskId);
+
+    void shutdownTask(Integer scheduleTaskId);
 }
