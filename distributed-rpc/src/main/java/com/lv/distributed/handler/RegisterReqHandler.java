@@ -5,8 +5,13 @@ import com.lv.distributed.bean.DistributeHeader;
 import com.lv.distributed.bean.DistributeRequest;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetSocketAddress;
 
 public class RegisterReqHandler extends ChannelHandlerAdapter {
+    Logger log = LoggerFactory.getLogger(RegisterReqHandler.class);
 
     private Object source;
 

@@ -55,4 +55,9 @@ public class TaskDetailServiceImpl extends ServiceImpl<TaskDetailMapper, TaskDet
         dispatch.publish(new TaskStartEvent(detail));
     }
 
+    @Override
+    public void shutdownTask(Integer scheduleTaskId) {
+
+    }
+
 }

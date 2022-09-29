@@ -72,7 +72,7 @@ public class DistributeSchduleClientBootstrap {
 
     private void initNettyClient(){
         AbstractScheduleBeanFactory scheduleBeanFactory = (AbstractScheduleBeanFactory) this.scheduleBeanFactory;
-        nettyClient = new NettyClient(scheduleBeanFactory.generateRequestBody(),invoker);
+        nettyClient = new NettyClient(scheduleBeanFactory.generateRequestBody(),invoker,scheduleConfig);
         nettyClient.start();
     }
 

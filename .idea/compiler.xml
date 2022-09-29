@@ -8,12 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="distributed-api" />
+        <module name="distributed-admin" />
         <module name="distributed-store" />
-        <module name="distributed-demo" />
         <module name="distributed-rpc" />
         <module name="distributed-client" />
         <module name="distributed-extension" />
-        <module name="distributed-admin" />
+        <module name="distributed-demo" />
         <module name="distributed-common" />
       </profile>
     </annotationProcessing>
