@@ -215,6 +215,11 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
             body.setMethodBean(value.getBeanDefinition().getBeanName());
             body.setMethodName(value.getMethod().getName());
             body.setMethodParamTypes(value.getMethod().getParameterTypes());
+            body.setCron(value.getCron());
+            body.setDescription(value.getDescription());
+            body.setFaultTolerant(value.getFaultTolerant());
+            body.setLoadBalance(value.getLoadBalance());
+            body.setStart(value.getStart());
             bodyList.add(body);
         }
         return bodyList;

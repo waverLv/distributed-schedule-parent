@@ -3,6 +3,7 @@ package com.lv.distributed.factory.method;
 import com.lv.distributed.annotation.DistributeSchedule;
 import com.lv.distributed.factory.bean.BeanDefinition;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,9 +23,12 @@ public abstract class AbstractScheduleMethodFactory implements ScheduleMethodFac
         Method[] declaredMethods = beanDefinition.getType().getDeclaredMethods();
         for(Method method : declaredMethods){
            if(method.isAnnotationPresent(DistributeSchedule.class)){
-               MethodDefinition methodDefinition = MethodDefinition.instance().beanDefinition(beanDefinition).method(method);
+               MethodDefinition methodDefinition = MethodDefinition.instance()
+                       .beanDefinition(beanDefinition)
+                       .method(method)
+                       .distributeSchedule(method.getAnnotation(DistributeSchedule.class));
                String methodDefinitionName = generateMethodName(methodDefinition);
-               methodDefinitionMap.putIfAbsent(methodDefinitionName,methodDefinition.name(methodDefinitionName));
+               methodDefinitionMap.put(methodDefinitionName,methodDefinition.name(methodDefinitionName));
            }
         }
     }

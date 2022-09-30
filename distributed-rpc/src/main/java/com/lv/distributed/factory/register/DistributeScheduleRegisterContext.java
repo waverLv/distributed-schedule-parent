@@ -48,7 +48,7 @@ public class DistributeScheduleRegisterContext implements ScheduleRegisterContex
      * @param ctx  通信通道
      * @param distributeRequestBody  定时任务注册实体
      */
-    private void registerApplicationGroup(ChannelHandlerContext ctx,DistributeRequestBody distributeRequestBody){
+    private void  registerApplicationGroup(ChannelHandlerContext ctx,DistributeRequestBody distributeRequestBody){
         RegisterChannelContext.put(distributeRequestBody.getApplicationName(),ctx);
     }
 

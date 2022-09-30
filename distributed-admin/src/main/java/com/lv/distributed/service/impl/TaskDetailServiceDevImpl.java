@@ -61,7 +61,7 @@ public class TaskDetailServiceDevImpl  implements TaskDetailService {
         detail.setMethodName("a");
         detail.setFaultTolerantName("default");
         detail.setBalanceName("default");
-        detail.setCronTab(" 0 */1 * * * ?");
+        detail.setCronTab("0 */1 * * * ?");
 //        this.updateById(detail);
         dispatch.publish(new TaskStartEvent(detail));
     }

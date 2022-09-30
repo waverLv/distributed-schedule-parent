@@ -8,6 +8,11 @@ public class DistributeRequestBody implements Serializable {
     private Object[] methodParamTypes;
     private String applicationName;
     private String methodParam;
+    private String loadBalance;
+    private String faultTolerant;
+    private Boolean start;
+    private String description;
+    private String cron;
 
     public String getMethodBean() {
         return methodBean;
@@ -47,5 +52,45 @@ public class DistributeRequestBody implements Serializable {
 
     public void setMethodParam(String methodParam) {
         this.methodParam = methodParam;
+    }
+
+    public String getLoadBalance() {
+        return loadBalance;
+    }
+
+    public void setLoadBalance(String loadBalance) {
+        this.loadBalance = loadBalance;
+    }
+
+    public String getFaultTolerant() {
+        return faultTolerant;
+    }
+
+    public void setFaultTolerant(String faultTolerant) {
+        this.faultTolerant = faultTolerant;
+    }
+
+    public Boolean getStart() {
+        return start;
+    }
+
+    public void setStart(Boolean start) {
+        this.start = start;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String cron) {
+        this.cron = cron;
     }
 }

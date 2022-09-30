@@ -4,7 +4,6 @@ import com.lv.distributed.bean.ScheduleConfig;
 import com.lv.distributed.bean.ServerProperty;
 import com.lv.distributed.codec.marshalling.NettyMessageDecoder;
 import com.lv.distributed.codec.marshalling.NettyMessageEncoder;
-import com.lv.distributed.common.NettyConstant;
 import com.lv.distributed.factory.invoke.Invoker;
 import com.lv.distributed.handler.*;
 import io.netty.bootstrap.Bootstrap;
@@ -16,7 +15,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,13 +23,13 @@ import java.util.concurrent.TimeUnit;
 public class NettyClient extends Thread{
     private Logger log = LoggerFactory.getLogger(NettyClient.class);
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-    private  EventLoopGroup group;
-    private  Bootstrap bootstrap;
-    private  ChannelFuture future;
-    private  Object source;
-    private  Invoker invoker;
+    private EventLoopGroup group;
+    private Bootstrap bootstrap;
+    private ChannelFuture future;
+    private Object source;
+    private Invoker invoker;
     private ScheduleConfig scheduleConfig;
-    private ClientConnectHandler cch = new ClientConnectHandler(this);
+    private ConnectReqHandler cch = new ConnectReqHandler(this);
 
     public NettyClient(Object source, Invoker invoker,ScheduleConfig scheduleConfig){
         this.source = source;

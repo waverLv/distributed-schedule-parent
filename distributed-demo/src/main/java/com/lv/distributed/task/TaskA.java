@@ -20,7 +20,7 @@ public class TaskA {
     @Inject(value = "serviceB")
     private ServiceB b;
 
-    @DistributeSchedule(name = "A任务")
+    @DistributeSchedule(name = "A任务",cron = "0 */1 * * * ?")
     public void a(){
         System.out.println("task a任务执行开始");
         b.b();

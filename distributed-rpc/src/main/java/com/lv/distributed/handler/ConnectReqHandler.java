@@ -16,19 +16,19 @@ import java.net.InetSocketAddress;
  * @Date: 2022/9/29 16:57
  * @Version: 1.0
  */
-public class ClientConnectHandler extends ChannelHandlerAdapter {
+public class ConnectReqHandler extends ChannelHandlerAdapter {
     Logger log = LoggerFactory.getLogger(RegisterReqHandler.class);
     private NettyClient nettyClient;
 
-    public ClientConnectHandler(NettyClient nettyClient){
+    public ConnectReqHandler(NettyClient nettyClient){
         this.nettyClient = nettyClient;
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        InetSocketAddress ipSocket = (InetSocketAddress) ctx.channel().remoteAddress();
-        int port = ipSocket.getPort();
-        String host = ipSocket.getHostString();
+        InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
+        int port = address.getPort();
+        String host = address.getHostString();
         log.error("服务端【" + host + ":" + port + "】下线!");
         ctx.close();
         ctx.deregister();
