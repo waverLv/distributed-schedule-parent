@@ -212,6 +212,8 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
         for(Map.Entry<String,MethodDefinition> entry : allMethodDefinitions.entrySet()){
             MethodDefinition value = entry.getValue();
             DistributeRequestBody body = new DistributeRequestBody();
+            // TODO 缺少@Value注解，取配置的distribute.application.name非空白值，默认default
+            body.setApplicationName("default");
             body.setMethodBean(value.getBeanDefinition().getBeanName());
             body.setMethodName(value.getMethod().getName());
             body.setMethodParamTypes(value.getMethod().getParameterTypes());

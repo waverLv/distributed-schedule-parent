@@ -1,7 +1,4 @@
-# Project exclude paths
-/distributed-admin/target/
-/distributed-api/target/
-/distributed-client/target/
-/distributed-common/target/
-/distributed-demo/target/
-/distributed-rpc/target/
+target
+.idea
+*.iml
+log.path_IS_UNDEFINED
