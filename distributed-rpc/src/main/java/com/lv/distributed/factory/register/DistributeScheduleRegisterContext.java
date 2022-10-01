@@ -1,24 +1,30 @@
 package com.lv.distributed.factory.register;
 
-import com.lv.distributed.bean.*;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Sets;
+import com.google.common.collect.Table;
+import com.lv.distributed.bean.DefaultDistributeTaskFactory;
+import com.lv.distributed.bean.DistributeRequest;
+import com.lv.distributed.bean.DistributeRequestBody;
+import com.lv.distributed.bean.DistributeTask;
+import com.lv.distributed.bean.DistributeTaskFactory;
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
 
 public class DistributeScheduleRegisterContext implements ScheduleRegisterContext {
+
     /**
-     * key: groupName,生成规则：application#methodBean#methodName#cronTab
-     * value: groupName下所有的任务
+     * row: groupName
+     * column: remoteAddress
+     * value: task
      */
-    private Map<String,List<DistributeTask>> taskGroupMap = new ConcurrentHashMap<>();
-    /**
-     * key: applicationName
-     * value: groupName
-     */
-    private Map<String,String>  applicationTaskGroup = new ConcurrentHashMap<>();
+    private Table<String, String, DistributeTask> taskTable = HashBasedTable.create();
+
     private DistributeTaskFactory distributeTaskFactory;
 
     public DistributeScheduleRegisterContext(){
@@ -29,14 +35,21 @@ public class DistributeScheduleRegisterContext implements ScheduleRegisterContex
 
     @Override
     public void register(ChannelHandlerContext ctx,Object msg) {
+        final String REMOTE_ADDRESS = ctx.channel().remoteAddress().toString();
+        final Set<Object> SURVIVAL_GROUPNAME_SET = Sets.newHashSet();
         DistributeRequest request = (DistributeRequest) msg;
         List<DistributeRequestBody> requestBodyList = (List<DistributeRequestBody>) request.getBody();
         requestBodyList.forEach(requestBody -> {
-            DistributeTask distributeTask = distributeTaskFactory.newTask(requestBody, false,ctx);
-            registerTaskGroup(distributeTask);
-            registerApplicationGroup(distributeTask);
+            DistributeTask distributeTask = distributeTaskFactory.newTask(requestBody, false, ctx);
+            taskTable.put(distributeTask.getGroupName(), REMOTE_ADDRESS, distributeTask);
+            SURVIVAL_GROUPNAME_SET.add(distributeTask.getGroupName());
         });
-
+        Map<String, DistributeTask> groupMap = taskTable.column(REMOTE_ADDRESS);
+        Sets.SetView<String> setView = Sets.difference(groupMap.keySet(), SURVIVAL_GROUPNAME_SET);
+        Iterator<String> iterator = setView.stream().iterator();
+        while (iterator.hasNext()) {
+            taskTable.remove(iterator.next(), REMOTE_ADDRESS);
+        }
     }
 
     @Override
@@ -44,57 +57,9 @@ public class DistributeScheduleRegisterContext implements ScheduleRegisterContex
 
     }
 
-    /**
-     * 将任务注册进全量任务列表
-     * @param distributeTask
-     */
-    private void registerApplicationGroup(DistributeTask distributeTask){
-        AbstractDistributeTask abstractDistributeTask = (AbstractDistributeTask) distributeTask;
-//        applicationTaskGroup.putIfAbsent(abstractDistributeTask.getRequestBody().getApplicationName(),abstractDistributeTask.getGroupName());
-    }
-
-    /**
-     * 将任务注册到同一个applicationName下
-     * @param distributeTask
-     */
-    private void registerTaskGroup(DistributeTask distributeTask){
-        if(!registerExists(distributeTask)){
-            doRegiserTaskGroup(distributeTask);
-        }
-    }
-
-    /**
-     * distribute task注册前检测
-     * @param distributeTask
-     * @return
-     */
-    private boolean registerExists(DistributeTask distributeTask){
-        List<DistributeTask> distributeTasks = taskGroupMap.get(distributeTask.getGroupName());
-        boolean exists = false;
-        if(null != distributeTasks && distributeTasks.size() > 0){
-            for(int i =0; i<distributeTasks.size(); i++){
-                if(distributeTasks.get(i).getGroupName().equals(distributeTask.getGroupName())){
-                    exists = true;
-                    break;
-                }
-            }
-        }
-        return exists;
-    }
-
-    /**
-     * 任务注册入taskGroup核心
-     * @param distributeTask
-     */
-    private void doRegiserTaskGroup(DistributeTask distributeTask){
-        List<DistributeTask> distributeTasks = taskGroupMap.get(distributeTask.getGroupName());
-        if(null == distributeTasks || distributeTasks.size() == 0) distributeTasks = new CopyOnWriteArrayList<>();
-        distributeTasks.add(distributeTask);
-        taskGroupMap.put(distributeTask.getGroupName(),distributeTasks);
-    }
-
     @Override
-    public List<DistributeTask> getTaskList(String groupName) {
-           return taskGroupMap.get(groupName);
+    public Collection<DistributeTask> getTaskList(String groupName) {
+        return taskTable.row(groupName).values();
     }
+
 }

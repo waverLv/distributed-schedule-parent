@@ -24,4 +24,12 @@ public class TaskA {
         b.b();
         System.out.println("task a任务执行结束");
     }
+
+    @DistributeSchedule(name = "B任务")
+    public void b() {
+        System.out.println("task b任务执行开始");
+        b.b();
+        System.out.println("task b任务执行结束");
+    }
+
 }
