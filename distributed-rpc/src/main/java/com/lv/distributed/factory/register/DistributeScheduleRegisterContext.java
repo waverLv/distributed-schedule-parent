@@ -27,8 +27,7 @@ public class DistributeScheduleRegisterContext implements ScheduleRegisterContex
     }
 
     @Override
-    public void register(ChannelHandlerContext ctx,Object msg) {
-        DistributeRequest request = (DistributeRequest) msg;
+    public void register(ChannelHandlerContext ctx,DistributeRequest request) {
         List<DistributeRequestBody> requestBodyList = (List<DistributeRequestBody>) request.getBody();
         requestBodyList.forEach(requestBody -> {
             registerApplicationGroup(ctx,requestBody);
@@ -39,7 +38,7 @@ public class DistributeScheduleRegisterContext implements ScheduleRegisterContex
     }
 
     @Override
-    public void unRegister(ChannelHandlerContext ctx, Object msg) {
+    public void unRegister(ChannelHandlerContext ctx, DistributeRequest request) {
 
     }
 

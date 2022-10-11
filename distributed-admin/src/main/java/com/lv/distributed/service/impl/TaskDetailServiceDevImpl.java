@@ -63,6 +63,7 @@ public class TaskDetailServiceDevImpl  implements TaskDetailService {
         detail.setBalanceName("default");
         detail.setCronTab("0 */1 * * * ?");
 //        this.updateById(detail);
+        //TODO 功能也可以放入切面
         dispatch.publish(new TaskStartEvent(detail));
     }
 

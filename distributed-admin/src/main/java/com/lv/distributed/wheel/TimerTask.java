@@ -1,20 +1,19 @@
 package com.lv.distributed.wheel;
 
-import org.springframework.context.ApplicationEvent;
+import com.lv.distributed.util.CronUtil;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public abstract class TimerTask implements Runnable {
 
-    private long delayMs; //表示当前任务延迟多久后执行(单位ms)，比如说延迟3s，则此值为3000
-    private ApplicationEvent applicationEvent;
+//    private long delayMs; //表示当前任务延迟多久后执行(单位ms)，比如说延迟3s，则此值为3000
+    private String cron;
     // 指向TimerTaskEntry对象，一个TimerTaskEntry包含一个TimerTask，TimerTaskEntry是可复用的
     private TimerTaskEntry timerTaskEntry = null;
 
-    public TimerTask(long delayMs) {
-        this.delayMs =  delayMs;
-    }
-    public TimerTask(ApplicationEvent applicationEvent,long delayMs) {
-        this.applicationEvent = applicationEvent;
-        this.delayMs = delayMs;
+    public TimerTask(String cron) {
+        this.cron =  cron;
     }
 
 
@@ -38,11 +37,19 @@ public abstract class TimerTask implements Runnable {
         return timerTaskEntry;
     }
 
-    public ApplicationEvent getApplicationEvent() {
-        return applicationEvent;
+    public long getDelayMs() {
+        return getDelayTime(cron);
     }
 
-    public long getDelayMs() {
-        return delayMs;
+    /**
+     *获取延迟时间
+     * @param cronTab
+     *
+     * @return
+     */
+    private Long getDelayTime(String cronTab){
+        LocalDateTime nextExecuteTime = CronUtil.getNextExecuteTime(cronTab);
+        Duration between = Duration.between(LocalDateTime.now(), nextExecuteTime);
+        return between.toMillis();
     }
 }

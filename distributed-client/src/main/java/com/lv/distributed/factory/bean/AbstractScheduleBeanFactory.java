@@ -28,12 +28,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactory, EventAware {
 
     /**
+     * 以beanName为维度存储bean定义
      * key: beanName
      * value: bean 实例
      */
     private Map<String,BeanDefinition> beanMap = new ConcurrentHashMap<>();
     /**
-     * 注册 class beanmap
+     * 以bean class为维度存储bean定义
      */
     private Map<Class,Map<String,BeanDefinition>> clazzesMap = new ConcurrentHashMap<>();
     protected PackageScannerContext scannerContext;

@@ -17,7 +17,6 @@ public class SystemTimer extends Thread implements Timer {
     private Long tickMs = 1L;
     private Integer wheelSize = 20;
     private Long startMs = System.currentTimeMillis();
-    private EventDispatch eventDispatch;
     //用来执行TimerTask任务
     private ExecutorService taskExecutor =
             Executors.newFixedThreadPool(1,(runnable) -> {
@@ -38,14 +37,16 @@ public class SystemTimer extends Thread implements Timer {
     // 用来执行时间轮的重新排列，及上一个槽中的任务列表被执行后，后面的槽中的任务列表移动
     private Consumer<TimerTaskEntry> reinsert = (timerTaskEntry) -> addTimerTaskEntry(timerTaskEntry);
 
-    public SystemTimer(String executorName, Long tickMs, Integer wheelSize, Long startMs) {
-        this(executorName,tickMs,wheelSize,startMs,null);
+    public SystemTimer(String executorName, Long tickMs, Integer wheelSize) {
+        this(executorName,tickMs,wheelSize,null);
     }
-    public SystemTimer(String executorName, Long tickMs, Integer wheelSize, Long startMs,EventDispatch eventDispatch) {
+    public SystemTimer(String executorName, Long tickMs, Integer wheelSize, Long startMs) {
         this.executorName = executorName;
         this.tickMs = tickMs;
         this.wheelSize = wheelSize;
-        this.startMs = startMs;
+        if(null != startMs){
+            this.startMs = startMs;
+        }
         this.timeWheel = new TimeWheel(
                 tickMs,
                 wheelSize,
@@ -53,7 +54,6 @@ public class SystemTimer extends Thread implements Timer {
                 taskCounter,
                 delayQueue
         );
-        this.eventDispatch = eventDispatch;
     }
 
     // 可能会多个线程操作，所以需要加锁
@@ -73,9 +73,7 @@ public class SystemTimer extends Thread implements Timer {
             // 返回false并且任务未取消，则提交当前任务立即执行。
             if(!timerTaskEntry.cancel()) {
                 taskExecutor.submit(timerTaskEntry.timerTask);
-                if(null != eventDispatch){
-                    eventDispatch.publish(timerTaskEntry.timerTask.getApplicationEvent());
-                }
+                add(timerTaskEntry.timerTask);
             }
         }
     }

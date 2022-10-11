@@ -32,7 +32,7 @@ public class TaskStartListener implements ApplicationListener<TaskStartEvent> {
     @Override
     public void onApplicationEvent(TaskStartEvent taskStartEvent) {
         TaskDetailPO  detail = (TaskDetailPO) taskStartEvent.getSource();
-        TimerTask timerTask = new TimerTask(taskStartEvent, getDelayTime(detail)) {
+        TimerTask timerTask = new TimerTask(detail.getCronTab()) {
             @Override
             public void run() {
                 executeInvokeService.invoke(detail);
@@ -41,19 +41,5 @@ public class TaskStartListener implements ApplicationListener<TaskStartEvent> {
         systemTimer.add(timerTask);
         TimerTaskContext.put(detail.getId(),timerTask);
     }
-
-    /**
-     *获取延迟时间
-     * @param detail
-     *
-     * @return
-     */
-    private Long getDelayTime(TaskDetailPO detail){
-        String cronTab = detail.getCronTab();
-        LocalDateTime nextExecuteTime = CronUtil.getNextExecuteTime(cronTab);
-        Duration between = Duration.between(LocalDateTime.now(), nextExecuteTime);
-        return between.toMillis();
-    }
-
 
 }

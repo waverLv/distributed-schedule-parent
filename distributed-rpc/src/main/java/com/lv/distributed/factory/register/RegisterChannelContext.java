@@ -34,6 +34,7 @@ public class RegisterChannelContext {
             ctxList = new ArrayList<>();
         }
         //TODO 重连场景，需考虑去重
+        //TODO ctx需在包装一层
         ctxList.add(ctx);
         applicationContextGroup.put(key,ctxList);
     }
