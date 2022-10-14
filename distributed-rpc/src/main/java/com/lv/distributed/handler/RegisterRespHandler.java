@@ -24,7 +24,7 @@ public class RegisterRespHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         DistributeRequest request = (DistributeRequest) msg;
         if(null != request && request.getHeader().getType() == MessageType.REGISTER_REQ.getCode()){
-            registerContext.register(ctx,msg);
+            registerContext.register(ctx,request);
         }
         ctx.fireChannelRead(msg);
     }

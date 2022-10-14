@@ -8,13 +8,36 @@ import com.lv.distributed.factory.register.RegisterChannelContext;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @ProjectName: RoundRobinLoadBalanceStrategy
+ * @Author: lvminghui
+ * @Description: 轮询负载策略
+ * @Date: 2022/10/12 11:19
+ * @Version: 1.0
+ */
 public class RoundRobinLoadBalanceStrategy extends AbstractLoadBalanceStrategy{
 
+    Map<String, AtomicInteger> roundRobinCounter = new ConcurrentHashMap<>();
+
     @Override
-    public void balance(DistributeTaskBO distributeTaskBO) {
+    public void choose(DistributeTaskBO distributeTaskBO) {
         DistributeTaskBOWrapper wrapper = (DistributeTaskBOWrapper) distributeTaskBO;
-        List<ChannelHandlerContext> channelHandlerContexts = RegisterChannelContext.get(wrapper.getApplicationName());
-        wrapper.setCtx(channelHandlerContexts.get(0));
+        choose(wrapper);
+    }
+
+    private void choose(DistributeTaskBOWrapper wrapper){
+        AtomicInteger counter = roundRobinCounter.get(wrapper.getApplicationName());
+        if(null == counter){
+            counter = new AtomicInteger(0);
+            roundRobinCounter.put(wrapper.getApplicationName(),counter);
+        }
+        List<ChannelHandlerContext> chcs = RegisterChannelContext.get(wrapper.getApplicationName());
+        int index = counter.incrementAndGet() % chcs.size();
+        wrapper.setCtx(chcs.get(index));
     }
 }

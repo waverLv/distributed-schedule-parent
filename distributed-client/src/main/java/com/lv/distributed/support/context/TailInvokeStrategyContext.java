@@ -6,7 +6,7 @@ import com.lv.distributed.executor.ExecutorContext;
 import org.springframework.beans.BeanUtils;
 
 /**
- * 尾部策略上下文
+ * 尾部策略容器
  */
 public  class TailInvokeStrategyContext extends InvokeStrategyContext{
 

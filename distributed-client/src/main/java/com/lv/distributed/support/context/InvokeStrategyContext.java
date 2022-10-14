@@ -1,7 +1,5 @@
 package com.lv.distributed.support.context;
 
-import com.lv.distributed.api.LoadBalanceStrategy;
-import com.lv.distributed.api.SupportStrategy;
 import com.lv.distributed.bean.DistributeTaskBO;
 import com.lv.distributed.bean.DistributeTaskResponseWrapper;
 import com.lv.distributed.support.Chooser;
