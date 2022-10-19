@@ -13,7 +13,7 @@ public class SystemTimerTest {
     public static void runTask() throws Exception {
         for(int i = 0;i < 10000;i+= 1000) {
             // 添加任务，每个任务间隔1s
-            timer.add(new TimerTask(i) {
+            timer.add(new TimerTask("") {
                 @Override
                 public void run() {
                     System.out.println("运行testTask的时间: " + LocalDateTime.now().toString());

@@ -82,11 +82,11 @@ public class MethodDefinition {
         return cron;
     }
 
-    public Object invoke() throws InvocationTargetException, IllegalAccessException {
-       return  method.invoke(beanDefinition.getProxy(),null);
-    }
-
     public Object invoke(Object... args) throws InvocationTargetException, IllegalAccessException {
-       return  method.invoke(beanDefinition.getProxy(),args);
+        int parameterCount = method.getParameterCount();
+        if(parameterCount > 0){
+            return  method.invoke(beanDefinition.getProxy(),args);
+        }
+        return method.invoke(beanDefinition.getProxy());
     }
 }

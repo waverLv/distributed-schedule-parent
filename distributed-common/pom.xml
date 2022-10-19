@@ -14,8 +14,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <dependencies>
@@ -36,13 +36,16 @@
           <artifactId>slf4j-api</artifactId>
           <version>1.7.25</version>
       </dependency>
-      <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
-      <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-          <version>1.7.25</version>
-          <!-- <scope>test</scope> -->
-      </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.2.3</version>
+    </dependency>
 
   </dependencies>
 

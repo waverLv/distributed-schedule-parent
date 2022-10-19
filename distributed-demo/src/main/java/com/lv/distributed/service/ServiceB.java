@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
  */
 @DistributeComponent
 public class ServiceB {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceB.class);
     public void b(){
-        System.out.println("b 方法被调用,当前时间："+ LocalDateTime.now());
+        LOGGER.info("b 方法被调用,当前时间："+ LocalDateTime.now());
     }
 }

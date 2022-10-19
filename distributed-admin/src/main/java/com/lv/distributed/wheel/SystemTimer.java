@@ -1,8 +1,5 @@
 package com.lv.distributed.wheel;
 
-import com.lv.distributed.monitor.EventDispatch;
-
-import java.util.Iterator;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,15 +35,13 @@ public class SystemTimer extends Thread implements Timer {
     private Consumer<TimerTaskEntry> reinsert = (timerTaskEntry) -> addTimerTaskEntry(timerTaskEntry);
 
     public SystemTimer(String executorName, Long tickMs, Integer wheelSize) {
-        this(executorName,tickMs,wheelSize,null);
+        this(executorName,tickMs,wheelSize,System.currentTimeMillis());
     }
     public SystemTimer(String executorName, Long tickMs, Integer wheelSize, Long startMs) {
         this.executorName = executorName;
         this.tickMs = tickMs;
         this.wheelSize = wheelSize;
-        if(null != startMs){
-            this.startMs = startMs;
-        }
+        this.startMs = startMs;
         this.timeWheel = new TimeWheel(
                 tickMs,
                 wheelSize,

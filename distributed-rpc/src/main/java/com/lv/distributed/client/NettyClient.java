@@ -21,7 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class NettyClient extends Thread{
-    private Logger log = LoggerFactory.getLogger(NettyClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettyClient.class);
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
     private EventLoopGroup group;
     private Bootstrap bootstrap;
@@ -68,7 +68,7 @@ public class NettyClient extends Thread{
                     });
             doConnect();
         }catch (Exception ex){
-            log.error("netty client连接服务器时发生异常,异常原因：",ex);
+            LOGGER.error("netty client连接服务器时发生异常,异常原因：",ex);
         }
     }
 
@@ -85,9 +85,9 @@ public class NettyClient extends Thread{
         bootstrap.connect().addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                if (!future.isSuccess()) {
+                if (!channelFuture.isSuccess()) {
                     // 连接不成功，5秒后重新连接
-                    future.channel().eventLoop().schedule(new Runnable() {
+                    channelFuture.channel().eventLoop().schedule(new Runnable() {
                         @Override
                         public void run() {
                             doConnect(serverProperty);
@@ -96,6 +96,6 @@ public class NettyClient extends Thread{
                 }
             }
         });
-        log.info("Netty client start ok . remoteAddress is {}",serverProperty.toString());
+        LOGGER.info("Netty client start ok . remoteAddress is {}",serverProperty.toString());
     }
 }

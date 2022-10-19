@@ -34,7 +34,6 @@ public class InvokeRespHandler extends ChannelHandlerAdapter {
         DistributeRequest request = (DistributeRequest) msg;
         if(null != request && request.getHeader().getType() == MessageType.INVOKE_REQ.getCode()){
             invoker.invoke(request);
-            log.info("调用成功,request="+request.toString());
         }else{
             ctx.fireChannelRead(msg);
         }

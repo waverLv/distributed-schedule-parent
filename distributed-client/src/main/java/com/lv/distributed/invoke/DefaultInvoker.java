@@ -5,6 +5,7 @@ import com.lv.distributed.bean.DistributeRequestBody;
 import com.lv.distributed.factory.invoke.Invoker;
 import com.lv.distributed.factory.method.MethodDefinition;
 import com.lv.distributed.factory.method.ScheduleMethodFactory;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @ProjectName: DefaultInvoker
@@ -27,7 +28,7 @@ public class DefaultInvoker implements Invoker {
         DistributeRequestBody body = (DistributeRequestBody) request.getBody();
         MethodDefinition method = methodFactory.method(methodFactory.generateMethodName(body));
         try{
-            method.invoke();
+            method.invoke(body.getMethodParam());
         }catch (Exception ex){
             ex.printStackTrace();
         }
