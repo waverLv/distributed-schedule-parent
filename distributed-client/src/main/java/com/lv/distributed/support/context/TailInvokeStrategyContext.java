@@ -5,6 +5,8 @@ import com.lv.distributed.executor.DefaultExecutorExecutorContext;
 import com.lv.distributed.executor.ExecutorContext;
 import org.springframework.beans.BeanUtils;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * 尾部策略容器
  */
@@ -22,23 +24,22 @@ public  class TailInvokeStrategyContext extends InvokeStrategyContext{
     }
 
     @Override
-    public DistributeTaskResponseWrapper invoke(DistributeTaskBO distributeTaskBO) {
-        DistributeTaskBOWrapper wrapper = (DistributeTaskBOWrapper) distributeTaskBO;
-        DistributeTask distributeTask = newTask(wrapper);
-        executorContext.submit(distributeTask);
-        return null;
+    public DistributeTaskResponseWrapper invoke(DistributeTaskBOWrapper wrapper) {
+        CompletableFuture completableFuture = asyncInvoke(wrapper);
+        try{
+            return (DistributeTaskResponseWrapper) completableFuture.get();
+        }catch (Exception ex){
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public CompletableFuture asyncInvoke(DistributeTaskBOWrapper wrapper) {
+
+        //TODO 超时时间优化
+        DistributeCompletableFuture future = DistributeCompletableFuture.newFuture(distributeTask, wrapper.getTimeout());
+        return future;
     }
 
 
-    private DistributeTask newTask(DistributeTaskBOWrapper wrapper){
-        DistributeRequestBody body = requestBody(wrapper);
-        return distributeTaskFactory.newTask(body, wrapper.isStart(), wrapper.getCtx());
-
-    }
-
-    private DistributeRequestBody requestBody(DistributeTaskBO distributeTaskBO){
-        DistributeRequestBody body = new DistributeRequestBody();
-        BeanUtils.copyProperties(distributeTaskBO,body);
-        return body;
-    }
 }

@@ -1,5 +1,6 @@
 package com.lv.distributed.handler;
 
+import com.lv.distributed.bean.DistributeHeader;
 import com.lv.distributed.bean.DistributeRequest;
 import com.lv.distributed.common.MessageType;
 import com.lv.distributed.factory.invoke.Invoker;
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * @Version: 1.0
  */
 public class InvokeRespHandler extends ChannelHandlerAdapter {
-    Logger log = LoggerFactory.getLogger(InvokeRespHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(InvokeRespHandler.class);
 
     private Invoker invoker;
 
@@ -33,9 +34,22 @@ public class InvokeRespHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         DistributeRequest request = (DistributeRequest) msg;
         if(null != request && request.getHeader().getType() == MessageType.INVOKE_REQ.getCode()){
+            invokeResp(ctx);
             invoker.invoke(request);
         }else{
             ctx.fireChannelRead(msg);
         }
+    }
+
+    /**
+     * 定时任务接收到请求后立刻响应调用成功
+     * @param ctx
+     */
+    private void invokeResp(ChannelHandlerContext ctx){
+        DistributeHeader header = new DistributeHeader();
+        header.setType(MessageType.INVOKE_RESP.getCode());
+        DistributeRequest request = new DistributeRequest();
+        request.setHeader(header);
+        ctx.writeAndFlush(request);
     }
 }

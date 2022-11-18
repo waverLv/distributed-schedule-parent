@@ -9,11 +9,16 @@ public abstract class TimerTask implements Runnable {
 
 //    private long delayMs; //表示当前任务延迟多久后执行(单位ms)，比如说延迟3s，则此值为3000
     private String cron;
+    private Integer delayTime;
     // 指向TimerTaskEntry对象，一个TimerTaskEntry包含一个TimerTask，TimerTaskEntry是可复用的
     private TimerTaskEntry timerTaskEntry = null;
 
     public TimerTask(String cron) {
         this.cron =  cron;
+    }
+
+    public TimerTask(Integer delayTime){
+        this.delayTime = delayTime;
     }
 
 

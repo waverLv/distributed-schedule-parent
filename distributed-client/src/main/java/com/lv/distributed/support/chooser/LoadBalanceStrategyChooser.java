@@ -1,8 +1,7 @@
-package com.lv.distributed.support.balance;
+package com.lv.distributed.support.chooser;
 
 import com.lv.distributed.api.LoadBalanceStrategy;
 import com.lv.distributed.factory.ExtensionFactory;
-import com.lv.distributed.support.AbstractChooser;
 
 public  class LoadBalanceStrategyChooser<T extends LoadBalanceStrategy> extends AbstractChooser<T> {
 

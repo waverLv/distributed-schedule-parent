@@ -1,6 +1,6 @@
 package com.lv.distributed.service;
 
-import com.lv.distributed.bean.DistributeTaskBO;
+import com.lv.distributed.bean.DistributeTaskResponseWrapper;
 import com.lv.distributed.bean.TaskDetailPO;
 
 /**
@@ -8,5 +8,5 @@ import com.lv.distributed.bean.TaskDetailPO;
  */
 public interface ExecuteInvokeService {
 
-    public void invoke(TaskDetailPO detail);
+    public DistributeTaskResponseWrapper invoke(TaskDetailPO detail);
 }

@@ -2,8 +2,12 @@ package com.lv.distributed.support.balance;
 
 import com.lv.distributed.bean.DistributeTaskBO;
 import com.lv.distributed.bean.DistributeTaskBOWrapper;
+import com.lv.distributed.bean.DistributeTaskRequestWrapper;
 import com.lv.distributed.factory.register.RegisterChannelContext;
+import com.lv.distributed.support.tolerant.FailoverFaultTolerantStrategy;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -17,11 +21,13 @@ import java.util.*;
  * @Version: 1.0
  */
 public class RandomLoadBalanceStrategy extends AbstractLoadBalanceStrategy {
+    private static  final Logger LOGGER  = LoggerFactory.getLogger(RandomLoadBalanceStrategy.class);
+
 
     @Override
-    public void choose(DistributeTaskBO distributeTaskBO) {
+    public void choose(DistributeTaskBOWrapper wrapper) {
         try{
-            randomize(distributeTaskBO);
+            randomize(wrapper);
         }catch (UnknownHostException ex){
             ex.printStackTrace();
         }
@@ -30,9 +36,8 @@ public class RandomLoadBalanceStrategy extends AbstractLoadBalanceStrategy {
     /**
      * 根据调用服务器内网IP随机选择定时任务服务器
      */
-    private static void randomize(DistributeTaskBO distributeTaskBO) throws UnknownHostException {
+    private static void randomize(DistributeTaskBOWrapper wrapper) throws UnknownHostException {
         String hostAddress = InetAddress.getLocalHost().getHostAddress();
-        DistributeTaskBOWrapper wrapper = (DistributeTaskBOWrapper) distributeTaskBO;
         List<ChannelHandlerContext> addressList = new ArrayList<>(RegisterChannelContext.get(wrapper.getApplicationName()));
         Random random = new Random(hostAddress.hashCode());
         int size = addressList.size();

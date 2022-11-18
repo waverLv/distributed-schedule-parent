@@ -2,8 +2,7 @@ package com.lv.distributed.executor;
 
 import com.lv.distributed.bean.DistributeTask;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public abstract class AbstractExecutorContext implements ExecutorContext {
     private ExecutorService executorService;
@@ -18,6 +17,10 @@ public abstract class AbstractExecutorContext implements ExecutorContext {
     @Override
     public void submit(DistributeTask task){
         executorService.submit(task);
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1,
+                0L, TimeUnit.MILLISECONDS,
+                new LinkedBlockingQueue<Runnable>(),
+                new DefaultThreadFactory());
     }
 
 }

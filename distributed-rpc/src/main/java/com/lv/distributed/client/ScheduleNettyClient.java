@@ -38,9 +38,9 @@ public class ScheduleNettyClient extends Thread{
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             socketChannel.pipeline().addLast("messageDecoder",new NettyMessageDecoder(1024*1024, 4, 4,-8,0));
                             socketChannel.pipeline().addLast("messageEncoder",new NettyMessageEncoder());
-//                            socketChannel.pipeline().addLast(new RegisterReqHandler(source));
-                            socketChannel.pipeline().addLast("loginAuthHandler",new LoginAuthReqHandler());
-                            socketChannel.pipeline().addLast("heartBeatHandler",new HeartBeatReqHandler());
+                            socketChannel.pipeline().addLast(new RegisterReqHandler(source));
+//                            socketChannel.pipeline().addLast("loginAuthHandler",new LoginAuthReqHandler());
+//                            socketChannel.pipeline().addLast("heartBeatHandler",new HeartBeatReqHandler());
 //                            socketChannel.pipeline().addLast(new InvokeRespHandler());
                         }
                     });

@@ -7,9 +7,9 @@ import com.lv.distributed.support.balance.RoundRobinLoadBalanceStrategy;
 import com.lv.distributed.support.context.FaultTolerantInvokeStrategyContext;
 import com.lv.distributed.support.context.LoadBalanceInvokeStrategyContext;
 import com.lv.distributed.support.context.RouterInvokeStrategyContext;
-import com.lv.distributed.support.balance.LoadBalanceStrategyChooser;
-import com.lv.distributed.support.fault_tolerant.FailoverFaultTolerantStrategy;
-import com.lv.distributed.support.fault_tolerant.FaultTolerantStrategyChooser;
+import com.lv.distributed.support.chooser.LoadBalanceStrategyChooser;
+import com.lv.distributed.support.tolerant.FailoverFaultTolerantStrategy;
+import com.lv.distributed.support.chooser.FaultTolerantStrategyChooser;
 import org.springframework.stereotype.Component;
 
 @Component

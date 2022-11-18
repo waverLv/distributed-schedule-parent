@@ -1,8 +1,9 @@
 package com.lv.distributed.support.pipeline;
 
 import com.lv.distributed.bean.DistributeTaskBO;
+import com.lv.distributed.bean.DistributeTaskBOWrapper;
 import com.lv.distributed.bean.DistributeTaskResponseWrapper;
-import com.lv.distributed.support.*;
+import com.lv.distributed.support.chooser.Chooser;
 import com.lv.distributed.support.context.DefaultInvokeStrategyContext;
 import com.lv.distributed.support.context.HeadInvokeStrategyContext;
 import com.lv.distributed.support.context.InvokeStrategyContext;
@@ -53,7 +54,7 @@ public abstract class AbstractInvokeStrategyPipneline implements InvokeStrategyP
 
     @Override
     public DistributeTaskResponseWrapper fireInvoke(DistributeTaskBO distributeTaskBO) {
-        return  this.headInvokeStrategyContext.invoke(distributeTaskBO);
+        return  this.headInvokeStrategyContext.invoke((DistributeTaskBOWrapper) distributeTaskBO);
     }
 
 

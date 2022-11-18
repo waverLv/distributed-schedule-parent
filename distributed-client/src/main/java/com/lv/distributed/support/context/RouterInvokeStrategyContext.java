@@ -4,7 +4,7 @@ import com.lv.distributed.bean.DistributeTaskBO;
 import com.lv.distributed.bean.DistributeTaskBOWrapper;
 import com.lv.distributed.bean.DistributeTaskResponseWrapper;
 import com.lv.distributed.factory.register.RegisterChannelContext;
-import com.lv.distributed.support.Chooser;
+import com.lv.distributed.support.chooser.Chooser;
 
 public class RouterInvokeStrategyContext extends InvokeStrategyContext {
 
@@ -13,9 +13,8 @@ public class RouterInvokeStrategyContext extends InvokeStrategyContext {
     }
 
     @Override
-    public DistributeTaskResponseWrapper invoke(DistributeTaskBO distributeTaskBO) {
-        DistributeTaskBOWrapper wrapper = (DistributeTaskBOWrapper) distributeTaskBO;
+    public DistributeTaskResponseWrapper invoke(DistributeTaskBOWrapper wrapper) {
         wrapper.setCtx(RegisterChannelContext.get(wrapper.getApplicationName()).get(0));
-        return this.next.invoke(wrapper);
+        return next().invoke(wrapper);
     }
 }

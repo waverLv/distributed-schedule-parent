@@ -6,6 +6,8 @@ import com.lv.distributed.bean.DistributeTaskRequestWrapper;
 import com.lv.distributed.bean.DistributeTaskResponseWrapper;
 import com.lv.distributed.factory.register.RegisterChannelContext;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,16 +23,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Version: 1.0
  */
 public class RoundRobinLoadBalanceStrategy extends AbstractLoadBalanceStrategy{
+    private static  final Logger LOGGER  = LoggerFactory.getLogger(RoundRobinLoadBalanceStrategy.class);
 
     Map<String, AtomicInteger> roundRobinCounter = new ConcurrentHashMap<>();
 
     @Override
-    public void choose(DistributeTaskBO distributeTaskBO) {
-        DistributeTaskBOWrapper wrapper = (DistributeTaskBOWrapper) distributeTaskBO;
-        choose(wrapper);
-    }
-
-    private void choose(DistributeTaskBOWrapper wrapper){
+    public void choose(DistributeTaskBOWrapper wrapper) {
         AtomicInteger counter = roundRobinCounter.get(wrapper.getApplicationName());
         if(null == counter){
             counter = new AtomicInteger(0);
@@ -40,4 +38,5 @@ public class RoundRobinLoadBalanceStrategy extends AbstractLoadBalanceStrategy{
         int index = counter.incrementAndGet() % chcs.size();
         wrapper.setCtx(chcs.get(index));
     }
+
 }

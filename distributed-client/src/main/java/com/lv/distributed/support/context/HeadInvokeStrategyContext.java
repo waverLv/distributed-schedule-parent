@@ -1,6 +1,7 @@
 package com.lv.distributed.support.context;
 
 import com.lv.distributed.bean.DistributeTaskBO;
+import com.lv.distributed.bean.DistributeTaskBOWrapper;
 import com.lv.distributed.bean.DistributeTaskResponseWrapper;
 
 /**
@@ -13,7 +14,7 @@ public  class HeadInvokeStrategyContext extends InvokeStrategyContext{
     }
 
     @Override
-    public DistributeTaskResponseWrapper invoke(DistributeTaskBO distributeTaskBO) {
-        return this.next.invoke(distributeTaskBO);
+    public DistributeTaskResponseWrapper invoke(DistributeTaskBOWrapper wrapper) {
+        return next().invoke(wrapper);
     }
 }

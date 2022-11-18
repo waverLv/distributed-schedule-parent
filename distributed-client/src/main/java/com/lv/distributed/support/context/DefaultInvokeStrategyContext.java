@@ -1,8 +1,9 @@
 package com.lv.distributed.support.context;
 
 import com.lv.distributed.bean.DistributeTaskBO;
+import com.lv.distributed.bean.DistributeTaskBOWrapper;
 import com.lv.distributed.bean.DistributeTaskResponseWrapper;
-import com.lv.distributed.support.Chooser;
+import com.lv.distributed.support.chooser.Chooser;
 
 public class DefaultInvokeStrategyContext extends InvokeStrategyContext {
 
@@ -11,8 +12,8 @@ public class DefaultInvokeStrategyContext extends InvokeStrategyContext {
     }
 
     @Override
-    public DistributeTaskResponseWrapper invoke(DistributeTaskBO distributeTaskBO) {
-        this.next.invoke(distributeTaskBO);
+    public DistributeTaskResponseWrapper invoke(DistributeTaskBOWrapper wrapper) {
+        next().invoke(wrapper);
         return null;
     }
 }

@@ -1,28 +1,21 @@
 package com.lv.distributed.factory.register;
 
-import com.lv.distributed.api.StoreService;
-import com.lv.distributed.bean.*;
+import com.lv.distributed.bean.DefaultDistributeTaskFactory;
+import com.lv.distributed.bean.DistributeRequest;
+import com.lv.distributed.bean.DistributeRequestBody;
+import com.lv.distributed.bean.DistributeTaskFactory;
 import io.netty.channel.ChannelHandlerContext;
-import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DistributeScheduleRegisterContext implements ScheduleRegisterContext {
 
     private DistributeTaskFactory distributeTaskFactory;
-    private StoreService storeService;
 
-    public DistributeScheduleRegisterContext(DistributeTaskFactory distributeTaskFactory,StoreService storeService){
-        Assert.assertNotNull("storeService不能为空",storeService);
+    public DistributeScheduleRegisterContext(DistributeTaskFactory distributeTaskFactory){
         if(distributeTaskFactory == null){
             distributeTaskFactory = new DefaultDistributeTaskFactory();
         }
-        this.storeService = storeService;
         this.distributeTaskFactory = distributeTaskFactory;
     }
 
@@ -32,7 +25,6 @@ public class DistributeScheduleRegisterContext implements ScheduleRegisterContex
         requestBodyList.forEach(requestBody -> {
             registerApplicationGroup(ctx,requestBody);
             //TODO 1、注册任务 2、注册成功后判定任务是否已经启动 3、若启动，添加到时间轮
-//            storeService.store(bo2Task(requestBody));
         });
 
     }

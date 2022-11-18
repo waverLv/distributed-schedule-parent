@@ -13,6 +13,7 @@ public class DistributeRequestBody implements Serializable {
     private Boolean start;
     private String description;
     private String cron;
+    private Long requestId;
 
     public String getMethodBean() {
         return methodBean;
@@ -92,5 +93,13 @@ public class DistributeRequestBody implements Serializable {
 
     public void setCron(String cron) {
         this.cron = cron;
+    }
+
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 }

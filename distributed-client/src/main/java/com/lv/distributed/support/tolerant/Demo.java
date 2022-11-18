@@ -1,8 +1,4 @@
-package com.lv.distributed.support.fault_tolerant;
-
-import com.lv.distributed.api.FaultTolerantStrategy;
-import com.lv.distributed.factory.SpiExtensionFactory;
-import com.lv.distributed.support.Chooser;
+package com.lv.distributed.support.tolerant;
 
 import java.math.BigDecimal;
 import java.util.*;

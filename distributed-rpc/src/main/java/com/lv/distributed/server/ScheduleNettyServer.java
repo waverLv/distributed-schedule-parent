@@ -2,14 +2,14 @@ package com.lv.distributed.server;
 
 import com.lv.distributed.codec.marshalling.NettyMessageDecoder;
 import com.lv.distributed.codec.marshalling.NettyMessageEncoder;
-import com.lv.distributed.factory.register.DistributeScheduleRegisterContext;
 import com.lv.distributed.factory.register.ScheduleRegisterContext;
 import com.lv.distributed.handler.HeartBeatRespHandler;
-import com.lv.distributed.handler.InvokeReqHandler;
 import com.lv.distributed.handler.LoginAuthRespHandler;
-import com.lv.distributed.handler.RegisterRespHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ScheduleNettyServer extends Thread{
-    Logger log = LoggerFactory.getLogger(ScheduleNettyServer.class);
+    private static final Logger log = LoggerFactory.getLogger(ScheduleNettyServer.class);
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
     private ServerBootstrap bootstrap;

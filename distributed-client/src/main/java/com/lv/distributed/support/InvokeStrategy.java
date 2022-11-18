@@ -1,8 +1,4 @@
-package com.lv.distributed.api;
-
-import com.lv.distributed.bean.DistributeTaskBO;
-import com.lv.distributed.bean.DistributeTaskRequestWrapper;
-import com.lv.distributed.bean.DistributeTaskResponseWrapper;
+package com.lv.distributed.support;
 
 public interface InvokeStrategy {
 

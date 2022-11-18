@@ -20,8 +20,8 @@ public abstract class AbstractDistributeTask implements DistributeTask{
         this.ctx = ctx;
 
     }
-
-    public DistributeRequestBody getRequestBody() {
+    @Override
+    public DistributeRequestBody requestBody() {
         return requestBody;
     }
 

@@ -1,5 +1,6 @@
-package com.lv.distributed.support;
+package com.lv.distributed.support.chooser;
 
+import com.lv.distributed.api.SupportStrategy;
 import com.lv.distributed.factory.ExtensionFactory;
 
 import java.util.Map;
@@ -12,11 +13,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date: 2022/9/16 17:03
  * @Version: 1.0
  */
-public abstract class AbstractChooser<T> implements Chooser<T>{
+public abstract class AbstractChooser<T extends SupportStrategy> implements Chooser<T> {
 
     private ExtensionFactory extensionFactory;
     private Class<T> clazz;
-    private Map<String,T> strategyMap = new ConcurrentHashMap<>();
+    private Map<String,SupportStrategy> strategyMap = new ConcurrentHashMap<>();
 
     public AbstractChooser(ExtensionFactory extensionFactory,Class<T> clazz){
         this.extensionFactory = extensionFactory;
@@ -25,7 +26,7 @@ public abstract class AbstractChooser<T> implements Chooser<T>{
     }
 
     @Override
-    public <T> T choose(String strategyName) {
+    public  T choose(String strategyName) {
         return (T) strategyMap.get(strategyName);
     }
 

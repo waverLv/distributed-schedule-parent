@@ -2,6 +2,7 @@ package com.lv.distributed.service.impl;
 
 import com.lv.distributed.bean.DistributeTaskBO;
 import com.lv.distributed.bean.DistributeTaskBOWrapper;
+import com.lv.distributed.bean.DistributeTaskResponseWrapper;
 import com.lv.distributed.bean.TaskDetailPO;
 import com.lv.distributed.service.ExecuteInvokeService;
 import com.lv.distributed.support.adapter.InvokeStrategyAdapter;
@@ -16,10 +17,11 @@ public class ExecuteInvokeServiceImpl implements ExecuteInvokeService {
     InvokeStrategyAdapter invokeStrategyAdapter;
 
     @Override
-    public void invoke(TaskDetailPO detail) {
+    public DistributeTaskResponseWrapper invoke(TaskDetailPO detail) {
         DistributeTaskBOWrapper distributeTaskBO = new DistributeTaskBOWrapper();
         BeanUtils.copyProperties(detail, distributeTaskBO);
         distributeTaskBO.setApplicationName("samples");
-        invokeStrategyAdapter.invoke(distributeTaskBO);
+        DistributeTaskResponseWrapper response = invokeStrategyAdapter.invoke(distributeTaskBO);
+        return response;
     }
 }
