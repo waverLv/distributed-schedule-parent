@@ -2,7 +2,6 @@ package com.lv.distributed.bean;
 
 public class DistributeTaskResponseWrapper {
     private DistributeTaskResponse response;
-    private DistributeTaskBOWrapper wrapper;
 
     public DistributeTaskResponse getResponse() {
         return response;
@@ -12,12 +11,5 @@ public class DistributeTaskResponseWrapper {
         this.response = response;
     }
 
-    public DistributeTaskBOWrapper getWrapper() {
-        return wrapper;
-    }
-
-    public void setWrapper(DistributeTaskBOWrapper wrapper) {
-        this.wrapper = wrapper;
-    }
 
 }

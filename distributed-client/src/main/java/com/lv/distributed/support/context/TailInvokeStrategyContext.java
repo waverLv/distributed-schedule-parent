@@ -35,10 +35,22 @@ public  class TailInvokeStrategyContext extends InvokeStrategyContext{
 
     @Override
     public CompletableFuture asyncInvoke(DistributeTaskBOWrapper wrapper) {
-
-        //TODO 超时时间优化
-        DistributeCompletableFuture future = DistributeCompletableFuture.newFuture(distributeTask, wrapper.getTimeout());
+        DistributeTask task = newTask(wrapper);
+        executorContext.submit(task);
+        DistributeCompletableFuture future = DistributeCompletableFuture.newFuture(task,wrapper.getTimeout());
         return future;
+    }
+
+    private DistributeTask newTask(DistributeTaskBOWrapper wrapper){
+        DistributeRequestBody body = requestBody(wrapper);
+        return distributeTaskFactory.newTask(body, wrapper.isStart(), wrapper.getCtx());
+
+    }
+
+    private DistributeRequestBody requestBody(DistributeTaskBOWrapper wrapper){
+        DistributeRequestBody body = new DistributeRequestBody();
+        BeanUtils.copyProperties(wrapper,body);
+        return body;
     }
 
 
