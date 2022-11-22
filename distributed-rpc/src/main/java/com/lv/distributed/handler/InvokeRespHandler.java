@@ -2,6 +2,7 @@ package com.lv.distributed.handler;
 
 import com.lv.distributed.bean.DistributeHeader;
 import com.lv.distributed.bean.DistributeRequest;
+import com.lv.distributed.bean.DistributeRequestBody;
 import com.lv.distributed.common.MessageType;
 import com.lv.distributed.factory.invoke.Invoker;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -34,8 +35,9 @@ public class InvokeRespHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         DistributeRequest request = (DistributeRequest) msg;
         if(null != request && request.getHeader().getType() == MessageType.INVOKE_REQ.getCode()){
-            invokeResp(ctx);
+            invokeResp(ctx,request);
             invoker.invoke(request);
+            //TODO 定时任务执行完成之后响应设计
         }else{
             ctx.fireChannelRead(msg);
         }
@@ -45,11 +47,13 @@ public class InvokeRespHandler extends ChannelHandlerAdapter {
      * 定时任务接收到请求后立刻响应调用成功
      * @param ctx
      */
-    private void invokeResp(ChannelHandlerContext ctx){
+    private void invokeResp(ChannelHandlerContext ctx,DistributeRequest request){
+        DistributeRequestBody body = (DistributeRequestBody) request.getBody();
         DistributeHeader header = new DistributeHeader();
         header.setType(MessageType.INVOKE_RESP.getCode());
-        DistributeRequest request = new DistributeRequest();
-        request.setHeader(header);
-        ctx.writeAndFlush(request);
+        header.setSessionId(body.getRequestId());
+        DistributeRequest response = new DistributeRequest();
+        response.setHeader(header);
+        ctx.writeAndFlush(response);
     }
 }

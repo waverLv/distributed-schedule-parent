@@ -24,11 +24,11 @@ public abstract class  AbstractFaultTolerantStrategy implements FaultTolerantStr
     }
 
     public  DistributeTaskResponseWrapper doInvoke(DistributeTaskBOWrapper wrapper, StrategyContext context) {
-        DistributeTaskResponseWrapper response = context.invoke(wrapper);
-        Exception exception = response.getResponse().getException();
+        DistributeTaskResponseWrapper responseWrapper = context.invoke(wrapper);
+        Exception exception = responseWrapper.getResponse().getException();
         if(null != exception){
             throw new RuntimeException(exception);
         }
-        return response;
+        return responseWrapper;
     }
 }

@@ -1,6 +1,5 @@
 package com.lv.distributed.bean;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
 public class DefaultDistributeTaskFactory implements DistributeTaskFactory{

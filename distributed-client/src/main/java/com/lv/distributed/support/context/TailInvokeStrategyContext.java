@@ -1,7 +1,7 @@
 package com.lv.distributed.support.context;
 
 import com.lv.distributed.bean.*;
-import com.lv.distributed.executor.DefaultExecutorExecutorContext;
+import com.lv.distributed.executor.DefaultExecutorContext;
 import com.lv.distributed.executor.ExecutorContext;
 import org.springframework.beans.BeanUtils;
 
@@ -19,7 +19,7 @@ public  class TailInvokeStrategyContext extends InvokeStrategyContext{
     public TailInvokeStrategyContext() {
         super(null);
         if(executorContext == null){
-            executorContext = new DefaultExecutorExecutorContext();
+            executorContext = new DefaultExecutorContext();
         }
     }
 
@@ -36,8 +36,7 @@ public  class TailInvokeStrategyContext extends InvokeStrategyContext{
     @Override
     public CompletableFuture asyncInvoke(DistributeTaskBOWrapper wrapper) {
         DistributeTask task = newTask(wrapper);
-        executorContext.submit(task);
-        DistributeCompletableFuture future = DistributeCompletableFuture.newFuture(task,wrapper.getTimeout());
+        DistributeCompletableFuture future = DistributeCompletableFuture.newFuture(task,wrapper.getTimeout(),executorContext);
         return future;
     }
 

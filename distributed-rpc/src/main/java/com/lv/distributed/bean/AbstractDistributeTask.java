@@ -46,6 +46,7 @@ public abstract class AbstractDistributeTask implements DistributeTask{
     public void run() {
         DistributeHeader header = new DistributeHeader();
         header.setType(MessageType.INVOKE_REQ.getCode());
+        header.setSessionId(requestBody.getRequestId());
         DistributeRequest request = new DistributeRequest();
         request.setHeader(header);
         request.setBody(requestBody);

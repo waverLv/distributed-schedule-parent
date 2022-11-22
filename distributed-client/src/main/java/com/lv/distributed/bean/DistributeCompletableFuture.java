@@ -1,5 +1,7 @@
 package com.lv.distributed.bean;
 
+import com.lv.distributed.common.MessageType;
+import com.lv.distributed.executor.ExecutorContext;
 import com.lv.distributed.wheel.SystemTimer;
 import com.lv.distributed.wheel.Timer;
 import com.lv.distributed.wheel.TimerTask;
@@ -25,18 +27,21 @@ public class DistributeCompletableFuture extends CompletableFuture {
     private DistributeTask task;
     private Integer timeout;
     private Long requestId;
+    private ExecutorContext executorContext;
 
-    private DistributeCompletableFuture(DistributeTask task, Integer timeout) {
+    private DistributeCompletableFuture(DistributeTask task, Integer timeout,ExecutorContext executorContext) {
         this.task = task;
         this.requestId = task.requestBody().getRequestId();
         this.timeout = timeout > 0 ? timeout : 1000;
+        this.executorContext = executorContext;
         FUTURES.put(this.requestId,this);
         CHANNELS.put(this.requestId,task.getCtx());
     }
 
 
-    public static DistributeCompletableFuture newFuture(DistributeTask task, Integer timeout){
-        DistributeCompletableFuture future = new DistributeCompletableFuture(task,timeout);
+    public static DistributeCompletableFuture newFuture(DistributeTask task, Integer timeout,ExecutorContext executorContext){
+        DistributeCompletableFuture future = new DistributeCompletableFuture(task,timeout,executorContext);
+        executorContext.submit(task);
         timeoutCheck(future);
         return future;
     }
@@ -60,14 +65,13 @@ public class DistributeCompletableFuture extends CompletableFuture {
     }
 
     private static void notifyTimeout(DistributeCompletableFuture future){
-        DistributeTaskResponseWrapper wrapper = new DistributeTaskResponseWrapper();
-        DistributeTaskResponse response = new DistributeTaskResponse();
-        response.setException(new RuntimeException("服务端调用远程:"+remoteAddress(future)+
-                "服务："+future.task.requestBody().getMethodBean()+
-                "."+future.task.requestBody().getMethodName()+
-                "超时："+future.timeout+"毫秒"));
-        future.complete(wrapper);
-
+            DistributeTaskResponseWrapper wrapper = new DistributeTaskResponseWrapper();
+            DistributeTaskResponse response = new DistributeTaskResponse();
+            response.setException(new RuntimeException("服务端调用远程:"+remoteAddress(future)+
+                    "服务："+future.task.requestBody().getMethodBean()+
+                    "."+future.task.requestBody().getMethodName()+
+                    "超时："+future.timeout+"毫秒"));
+            future.complete(wrapper);
     }
 
     private static String remoteAddress(DistributeCompletableFuture future){
@@ -80,6 +84,12 @@ public class DistributeCompletableFuture extends CompletableFuture {
         CHANNELS.remove(future.requestId);
     }
 
-
-
+    public static void invokeComplete(DistributeCompletableFuture future){
+        DistributeTaskResponseWrapper wrapper = new DistributeTaskResponseWrapper();
+        DistributeTaskResponse response = new DistributeTaskResponse();
+        response.setCode(Integer.valueOf(MessageType.INVOKE_REQ.getCode()));
+        response.setMessage(MessageType.INVOKE_RESP.getDesc());
+        future.complete(wrapper);
+        clear(future);
+    }
 }
