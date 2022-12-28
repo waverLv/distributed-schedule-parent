@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @Version: 1.0
  */
 public class InvokeRespHandler extends ChannelHandlerAdapter {
-    private static final Logger LOG = LoggerFactory.getLogger(InvokeRespHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvokeRespHandler.class);
 
     private Invoker invoker;
 

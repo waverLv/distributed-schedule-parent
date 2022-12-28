@@ -3,7 +3,6 @@ package com.lv.distributed.config;
 import com.lv.distributed.api.StoreService;
 import com.lv.distributed.bootstrap.DistributeScheduleServerBootstrap;
 import com.lv.distributed.factory.register.DistributeScheduleRegisterContext;
-import com.lv.distributed.factory.register.ScheduleRegisterContext;
 import com.lv.distributed.server.NettyServer;
 import com.lv.distributed.service.impl.StoreServiceImpl;
 import com.lv.distributed.support.adapter.DefaultInvokeStrategyAdapter;
@@ -30,8 +29,8 @@ public class ServerConfig {
     }
 
     @Bean
-    public ScheduleRegisterContext registerContext(){
-        return new DistributeScheduleRegisterContext(null,storeService());
+    public DistributeScheduleRegisterContext registerContext(){
+        return new DistributeScheduleRegisterContext();
     }
 
     @Bean

@@ -1,0 +1,3 @@
+default=com.lv.distributed.support.balance.RoundRobinLoadBalanceStrategy
+random=com.lv.distributed.support.balance.RandomLoadBalanceStrategy
+roundrobin=com.lv.distributed.support.balance.RoundRobinLoadBalanceStrategy

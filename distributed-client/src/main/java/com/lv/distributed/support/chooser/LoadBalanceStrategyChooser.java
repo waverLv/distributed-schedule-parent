@@ -1,13 +1,13 @@
 package com.lv.distributed.support.chooser;
 
-import com.lv.distributed.api.LoadBalanceStrategy;
 import com.lv.distributed.factory.ExtensionFactory;
+import com.lv.distributed.support.balance.LoadBalanceStrategy;
 
-public  class LoadBalanceStrategyChooser<T extends LoadBalanceStrategy> extends AbstractChooser<T> {
+public  class LoadBalanceStrategyChooser extends AbstractChooser<LoadBalanceStrategy> {
 
 
     public LoadBalanceStrategyChooser(ExtensionFactory extensionFactory) {
-        super(extensionFactory, (Class<T>) LoadBalanceStrategy.class);
+        super(extensionFactory, LoadBalanceStrategy.class);
     }
 
 }

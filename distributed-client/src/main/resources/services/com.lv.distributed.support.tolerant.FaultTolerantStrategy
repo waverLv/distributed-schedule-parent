@@ -1,0 +1,5 @@
+default=com.lv.distributed.support.tolerant.FailoverFaultTolerantStrategy
+failover=com.lv.distributed.support.tolerant.FailoverFaultTolerantStrategy
+failsafe=com.lv.distributed.support.tolerant.FailSafeFaultTolerantStrategy
+failfast=com.lv.distributed.support.tolerant.FailFastFaultTolerantStrategy
+fork=com.lv.distributed.support.tolerant.ForkingFaultTolerantStrategy

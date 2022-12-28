@@ -12,6 +12,9 @@ public class DistributeScheduleRegisterContext implements ScheduleRegisterContex
 
     private DistributeTaskFactory distributeTaskFactory;
 
+    public DistributeScheduleRegisterContext(){
+        this(null);
+    }
     public DistributeScheduleRegisterContext(DistributeTaskFactory distributeTaskFactory){
         if(distributeTaskFactory == null){
             distributeTaskFactory = new DefaultDistributeTaskFactory();

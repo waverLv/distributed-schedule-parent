@@ -1,8 +1,8 @@
 package com.lv.distributed.support.balance;
 
 import com.lv.distributed.annotation.SPI;
-import com.lv.distributed.api.SupportStrategy;
 import com.lv.distributed.bean.DistributeTaskBOWrapper;
+import com.lv.distributed.support.SupportStrategy;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;

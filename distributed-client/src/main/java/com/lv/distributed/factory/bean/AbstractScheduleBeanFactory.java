@@ -111,7 +111,7 @@ public abstract class AbstractScheduleBeanFactory  implements ScheduleBeanFactor
      * @param bd
      */
     private void populate(BeanDefinition bd) throws IllegalAccessException, InstantiationException {
-        Field[] declaredFields = bd.getTarget().getClass().getDeclaredFields();
+        Field[] declaredFields = bd.getType().getDeclaredFields();
         for(int i=0; i<declaredFields.length; i++){
             Field field = declaredFields[i];
             field.setAccessible(true);

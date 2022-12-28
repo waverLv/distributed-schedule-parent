@@ -1,7 +1,7 @@
 package com.lv.distributed.support.chooser;
 
-import com.lv.distributed.api.SupportStrategy;
 import com.lv.distributed.factory.ExtensionFactory;
+import com.lv.distributed.support.SupportStrategy;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
