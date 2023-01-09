@@ -23,7 +23,7 @@ public class SystemTimer extends Thread implements Timer {
                 return thread;
             });
     //延迟队列
-    private DelayQueue<TimerTaskList> delayQueue = new DelayQueue<>();
+    private DelayQueue<TimerTaskEntity> delayQueue = new DelayQueue<>();
     private AtomicInteger taskCounter = new AtomicInteger(0);
     private TimeWheel timeWheel;
 
@@ -78,7 +78,7 @@ public class SystemTimer extends Thread implements Timer {
     @Override
     public boolean advanceClock(Long timeoutMs) throws Exception{
         // 使用阻塞队列获取任务
-        TimerTaskList bucket = delayQueue.poll(timeoutMs, TimeUnit.MILLISECONDS);
+        TimerTaskEntity bucket = delayQueue.poll(timeoutMs, TimeUnit.MILLISECONDS);
         if(bucket != null) {
             writeLock.lock();
             try{

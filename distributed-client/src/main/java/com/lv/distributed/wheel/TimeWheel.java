@@ -11,15 +11,15 @@ public class TimeWheel {
     private Integer wheelSize; // 时间轮大小，即每一层时间轮的大小
     private Long startMs; // 系统的启动时间
     private AtomicInteger taskCounter;  // 当前层任务数
-    private DelayQueue<TimerTaskList> queue; //延迟队列，用于从队列取每个任务列表
+    private DelayQueue<TimerTaskEntity> queue; //延迟队列，用于从队列取每个任务列表
 
-    private List<TimerTaskList> buckets;  // 每一层的每一个槽中的时间任务列表
+    private List<TimerTaskEntity> buckets;  // 每一层的每一个槽中的时间任务列表
     private Long interval; //每一层时间轮代表的时间
     private Long currentTime;  // 修正后的系统启动时间
 
     private TimeWheel overflowWheel = null;  // 上一层时间轮
 
-    public TimeWheel(Long tickMs, Integer wheelSize, Long startMs, AtomicInteger taskCounter, DelayQueue<TimerTaskList> queue) {
+    public TimeWheel(Long tickMs, Integer wheelSize, Long startMs, AtomicInteger taskCounter, DelayQueue<TimerTaskEntity> queue) {
         this.tickMs = tickMs;
         this.wheelSize = wheelSize;
         this.startMs = startMs;
@@ -30,7 +30,7 @@ public class TimeWheel {
 
         buckets = new ArrayList<>(wheelSize);
         for(int i = 0;i < wheelSize;i++) {
-            buckets.add(new TimerTaskList(taskCounter));  //创建每一个槽中的列表
+            buckets.add(new TimerTaskEntity(taskCounter));  //创建每一个槽中的列表
         }
     }
 
@@ -58,11 +58,11 @@ public class TimeWheel {
             return false;
             // 判断当前任务能否在添加到当前时间轮
         }else if(expiration < currentTime + interval) {
-
+            //计算任务过期时间包含多少个tick时间间隔
             Long virtualId = expiration / tickMs;
-            // 计算当前任务要分配在哪个槽中
+            // 计算当前任务要分配在哪个槽中,即当前任务属于哪个时间轮（计算时间轮下标）
             int whereBucket = (int) (virtualId % wheelSize);
-            TimerTaskList bucket = buckets.get(whereBucket);
+            TimerTaskEntity bucket = buckets.get(whereBucket);
 
             bucket.add(timerTaskEntry);
 

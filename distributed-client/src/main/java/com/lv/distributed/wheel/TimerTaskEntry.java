@@ -7,7 +7,7 @@ public  class TimerTaskEntry implements Comparable<TimerTaskEntry>{
     public Long expirationMs;
 
     // 当前任务属于哪一个列表
-    public TimerTaskList list;
+    public TimerTaskEntity list;
     // 当前任务的上一个任务，用双向列表连接
     public TimerTaskEntry prev;
     public TimerTaskEntry next;
@@ -29,7 +29,7 @@ public  class TimerTaskEntry implements Comparable<TimerTaskEntry>{
 
     // 任务的移出
     public void remove() {
-        TimerTaskList currentList = list;
+        TimerTaskEntity currentList = list;
         while(currentList != null) {
             currentList.remove(this);
             currentList = list;

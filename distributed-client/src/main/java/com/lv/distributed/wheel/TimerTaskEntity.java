@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-public class TimerTaskList implements Delayed {
+public class TimerTaskEntity implements Delayed {
     //当前列表中包含的任务数
     private AtomicInteger taskCounter;
     // 列表的头结点
@@ -15,7 +15,7 @@ public class TimerTaskList implements Delayed {
     private AtomicLong expiration = new AtomicLong(-1L);
 
 
-    public TimerTaskList(AtomicInteger taskCounter) {
+    public TimerTaskEntity(AtomicInteger taskCounter) {
         this.taskCounter = taskCounter;
         this.root =  new TimerTaskEntry(null,-1L);
         root.next = root;
@@ -93,7 +93,7 @@ public class TimerTaskList implements Delayed {
 
     @Override
     public int compareTo(Delayed d) {
-        TimerTaskList other = (TimerTaskList) d;
+        TimerTaskEntity other = (TimerTaskEntity) d;
         return Long.compare(getExpiration(),other.getExpiration());
     }
     //获得当前任务剩余时间
